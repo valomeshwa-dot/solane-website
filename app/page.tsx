@@ -30,7 +30,15 @@ export default function Home() {
     <main className="bg-[#0f0f10] text-neutral-100 relative">
 
       {/* SECTION 1 — HERO */}
-      <Section className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-28">
+      <Section
+        className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-28"
+        style={{ backgroundImage: "url('/hero.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
+      >
+
+        {/* Dark Luxury Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/90" />
+
+        {/* Hero Text Content */}
         <Container className="max-w-6xl mx-auto px-6 relative z-10">
           <motion.div style={{ y }} className="max-w-3xl">
             <p className="text-xs tracking-[0.35em] text-amber-400 font-medium uppercase">
@@ -77,20 +85,6 @@ export default function Home() {
             </motion.div>
           </motion.div>
         </Container>
-
-        {/* Animated Background Energy Lines */}
-        <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
-          <div className="hero-energy-line top-[25%] opacity-[0.10]" />
-          <div className="hero-energy-line top-[50%] opacity-[0.14] [animation-delay:-6s]" />
-          <div className="hero-energy-line top-[75%] opacity-[0.10] [animation-delay:-12s]" />
-        </div>
-
-        {/* Energy Line Glow Layer */}
-        <div className="absolute inset-0 pointer-events-none -z-10 overflow-hidden">
-          <div className="absolute top-1/2 left-[-35%] w-[170%] h-[260px] -translate-y-1/2">
-            <div className="energy-line-theme" />
-          </div>
-        </div>
       </Section>
 
       <div className="border-t border-white/5 mx-auto max-w-6xl" />
@@ -249,24 +243,31 @@ export default function Home() {
       <Section className="border-t border-white/5 py-32">
         <Container className="max-w-6xl mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-10">
+
             {/* Residential */}
             <Link href="/residential" className="block group">
-              <div className="relative h-[500px] w-full cursor-pointer rounded-2xl overflow-hidden border border-white/5 group">
-                <Image
-                  src="https://picsum.photos/seed/res-solar/1200/800"
-                  alt="Residential Solar"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0 opacity-70"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-                  <div className="max-w-[100%] md:max-w-[70%]">
-                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors">Residential</h3>
-                    <p className="text-neutral-400 text-base leading-relaxed">Premium rooftop systems tailored for luxury homes seeking long-term energy independence.</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-full flex items-center gap-2 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all duration-500 whitespace-nowrap">
-                    <span className="text-sm font-semibold">Explore</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md">
+                {/* Image */}
+                <div className="absolute inset-0">
+                  <img
+                    src="/residential.jpeg"
+                    alt="Residential Solar"
+                    className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                  />
+                </div>
+                {/* Strong Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+                {/* Content */}
+                <div className="relative z-10 p-8 flex flex-col justify-between h-full">
+                  <div />
+                  <div>
+                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors duration-300">Residential</h3>
+                    <p className="text-white/80 text-lg max-w-md mb-6">
+                      Premium rooftop systems tailored for luxury homes seeking long-term energy independence.
+                    </p>
+                    <button className="px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
+                      Explore <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
@@ -274,26 +275,33 @@ export default function Home() {
 
             {/* Commercial */}
             <Link href="/commercial" className="block group">
-              <div className="relative h-[500px] w-full cursor-pointer rounded-2xl overflow-hidden border border-white/5 group">
-                <Image
-                  src="https://picsum.photos/seed/com-solar/1200/800"
-                  alt="Commercial Solar"
-                  fill
-                  className="object-cover group-hover:scale-105 transition-transform duration-1000 grayscale group-hover:grayscale-0 opacity-70"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/40 to-transparent" />
-                <div className="absolute bottom-12 left-12 right-12 flex flex-col md:flex-row justify-between items-start md:items-end gap-8">
-                  <div className="max-w-[100%] md:max-w-[70%]">
-                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors">Commercial</h3>
-                    <p className="text-neutral-400 text-base leading-relaxed">Scalable solar infrastructure that protects business margins and reduces operational costs.</p>
-                  </div>
-                  <div className="bg-white/10 backdrop-blur-md border border-white/20 text-white px-8 py-3 rounded-full flex items-center gap-2 group-hover:bg-amber-500 group-hover:text-black group-hover:border-amber-500 transition-all duration-500 whitespace-nowrap">
-                    <span className="text-sm font-semibold">Explore</span>
-                    <ArrowRight className="w-4 h-4 ml-1" />
+              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md">
+                {/* Image */}
+                <div className="absolute inset-0">
+                  <img
+                    src="/commercial.jpeg"
+                    alt="Commercial Solar"
+                    className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                  />
+                </div>
+                {/* Strong Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+                {/* Content */}
+                <div className="relative z-10 p-8 flex flex-col justify-between h-full">
+                  <div />
+                  <div>
+                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors duration-300">Commercial</h3>
+                    <p className="text-white/80 text-lg max-w-md mb-6">
+                      Scalable solar infrastructure that protects business margins and reduces operational costs.
+                    </p>
+                    <button className="px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
+                      Explore <ArrowRight className="w-4 h-4" />
+                    </button>
                   </div>
                 </div>
               </div>
             </Link>
+
           </div>
         </Container>
       </Section>
@@ -322,17 +330,20 @@ export default function Home() {
               {
                 step: '01',
                 title: 'Consultation',
-                text: 'We analyze your consumption patterns, rooftop structure, and financial goals to design a system aligned with your vision.'
+                text: 'We analyze your consumption patterns, rooftop structure, and financial goals to design a system aligned with your vision.',
+                img: '/consultation.jpeg'
               },
               {
                 step: '02',
                 title: 'Engineering',
-                text: 'Our engineers create a high-performance system using advanced modeling to maximize output and durability.'
+                text: 'Our engineers create a high-performance system using advanced modeling to maximize output and durability.',
+                img: '/engineering.jpeg'
               },
               {
                 step: '03',
                 title: 'Installation',
-                text: 'Certified specialists execute installation with structural precision and full compliance support.'
+                text: 'Certified specialists execute installation with structural precision and full compliance support.',
+                img: '/installation.jpeg'
               },
             ].map((item, i) => (
               <motion.div
@@ -357,14 +368,17 @@ export default function Home() {
                   </div>
                 </div>
                 <div className={cn("relative", i % 2 === 1 ? "lg:order-1" : "lg:order-2")}>
-                  <div className="relative h-[550px] lg:h-[850px] rounded-2xl overflow-hidden border border-white/5 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
-                    <Image
-                      src={`https://picsum.photos/seed/path-${i}/1200/900`}
-                      alt={item.title}
-                      fill
-                      className="object-cover opacity-60 grayscale group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.03] transition-all duration-1000"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-60" />
+                  <div className="group relative h-[550px] lg:h-[850px] overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
+                    {/* Image */}
+                    <div className="absolute inset-0">
+                      <img
+                        src={item.img}
+                        alt={item.title}
+                        className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                      />
+                    </div>
+                    {/* Strong Dark Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
                   </div>
                 </div>
               </motion.div>
