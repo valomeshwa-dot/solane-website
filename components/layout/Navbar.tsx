@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { Container } from '@/components/ui/Container';
 import { Button } from '@/components/ui/Button';
+import { MagneticButton } from '@/components/ui/MagneticButton';
 import { cn } from '@/lib/utils';
 
 const navLinks = [
@@ -21,11 +22,25 @@ const navLinks = [
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   return (
     <nav
-      className="fixed top-0 left-0 right-0 z-50 h-20 flex items-center px-6 lg:px-12 bg-[#0f0f10]/80 backdrop-blur-md border-b border-neutral-800/50"
+      className={cn(
+        "fixed top-0 left-0 right-0 z-50 transition-all duration-300 flex items-center px-6 lg:px-12 backdrop-blur-md border-b",
+        scrolled
+          ? "h-16 bg-black/75 border-amber-500/10"
+          : "h-20 bg-[#0f0f10]/80 border-neutral-800/50"
+      )}
     >
       <div className="w-full max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="text-xl font-semibold tracking-tight text-white flex items-center gap-1">
@@ -46,9 +61,13 @@ export const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full px-6 border-none">
-            Get Assessment
-          </Button>
+          <MagneticButton>
+            <Link href="/assessment">
+              <Button size="sm" className="bg-amber-500 hover:bg-amber-600 text-black font-semibold rounded-full px-6 border-none">
+                Get Assessment
+              </Button>
+            </Link>
+          </MagneticButton>
         </div>
 
         {/* Mobile Menu Button */}

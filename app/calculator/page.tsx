@@ -1,221 +1,408 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
-import { MapPin, Zap, Home, Layout, Share2, Calendar, TrendingUp, Trees, Wind } from 'lucide-react';
+import { MapPin, Zap, Layout, Calendar, TrendingUp, Trees, Wind, ArrowRight, Share2, Info, ChevronUp } from 'lucide-react';
+import { motion, AnimatePresence, animate } from 'framer-motion';
+import { cn } from '@/lib/utils';
+import { Magnetic } from '@/components/ui/Magnetic';
+
+const luxuryEase = [0.16, 1, 0.3, 1];
+
+const formatCurrency = (val: number) => {
+  if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
+  if (val >= 100000) return `₹${(val / 100000).toFixed(2)} L`;
+  return `₹${val.toLocaleString()}`;
+};
+
+function Counter({ value, decimals = 0, prefix = "", suffix = "", isCurrency = false }: { value: number; decimals?: number; prefix?: string; suffix?: string; isCurrency?: boolean }) {
+  const [displayValue, setDisplayValue] = React.useState(0);
+
+  useEffect(() => {
+    const controls = animate(displayValue, value, {
+      duration: 1.5,
+      ease: luxuryEase,
+      onUpdate: (latest) => setDisplayValue(latest)
+    });
+    return () => controls.stop();
+  }, [value, displayValue]);
+
+  return (
+    <span className="whitespace-nowrap">
+      {isCurrency ? formatCurrency(displayValue) : `${prefix}${displayValue.toLocaleString(undefined, {
+        minimumFractionDigits: decimals,
+        maximumFractionDigits: decimals
+      })}${suffix}`}
+    </span>
+  );
+}
 
 export default function SolarCalculator() {
+  const [isCommercial, setIsCommercial] = useState(false);
+  const [monthlyBill, setMonthlyBill] = useState(8000);
+  const [location, setLocation] = useState('Maharashtra');
+  const [roofArea, setRoofArea] = useState(1200);
+  const [isCalculated, setIsCalculated] = useState(false);
+  const [projectionYear, setProjectionYear] = useState(25);
+
+  const annualSavings = monthlyBill * 0.9 * 12;
+  const lifetimeSavings = annualSavings * projectionYear;
+  const paybackPeriod = isCommercial ? 3.2 : 4.5;
+  const co2Avoided = (monthlyBill / 10) * 0.8 * 12;
+  const treesPlanted = Math.round(co2Avoided / 20);
+
+  const handleCalculate = () => {
+    setIsCalculated(true);
+  };
+
   return (
-    <main className="bg-[#0f0f10] text-neutral-100 min-h-screen">
-      {/* 1️⃣ HERO HEADER */}
-      <Section className="pt-32 pb-12 lg:pt-48">
-        <Container className="max-w-7xl mx-auto px-6">
-          <div className="max-w-2xl space-y-6">
-            <span className="text-amber-500 font-bold tracking-[0.2em] text-xs uppercase">
-              ROI CALCULATOR
-            </span>
-            <h1 className="text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.1]">
-              Calculate Your Solar <br /> <span className="text-amber-500">ROI</span> In Minutes
-            </h1>
-            <p className="text-neutral-400 text-lg lg:text-xl leading-relaxed">
-              Discover the financial impact of switching to Solane’s premium solar systems. Enter your details to estimate savings, payback period, and long-term returns.
-            </p>
-          </div>
+    <main className="min-h-screen bg-[#0B0F14] text-[#FFFFFF] font-sans selection:bg-amber-500/30 overflow-x-hidden">
+
+      {/* 🏙️ Hero Content */}
+      <Section className="pt-32 pb-20 lg:pt-48 lg:pb-24">
+        <Container className="max-w-[1200px] mx-auto px-6 text-center lg:text-left">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, ease: luxuryEase }}
+            className="space-y-6"
+          >
+            <div className="flex items-center gap-3 justify-center lg:justify-start">
+              <div className="bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
+                <Zap className="w-3 h-3 text-[#F5A623] fill-[#F5A623]" />
+              </div>
+              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500">ROI Calculator</span>
+            </div>
+
+            <div className="max-w-3xl space-y-4">
+              <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
+                Calculate Your Solar <br />
+                <span className="relative inline-block text-[#FFFFFF]">
+                  ROI
+                  <div className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#F5A623]" />
+                </span> In Minutes
+              </h1>
+              <p className="text-[#FFFFFF]/70 text-base lg:text-lg leading-relaxed max-w-[500px] font-medium">
+                High-precision modeling for solar asset performance and multi-decade financial sovereignty.
+              </p>
+            </div>
+          </motion.div>
         </Container>
       </Section>
 
-      {/* 2️⃣ MAIN TWO-COLUMN LAYOUT */}
-      <Section className="py-12 lg:py-20">
-        <Container className="max-w-7xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-16 items-start">
+      {/* 📊 Calculator Core */}
+      <Section className="pb-32 lg:pb-48">
+        <Container className="max-w-[1200px] mx-auto px-6 overflow-hidden">
+          <div className="grid lg:grid-cols-[460px_1fr] gap-12 lg:gap-16 items-start">
 
-            {/* LEFT COLUMN — INPUT FORM CARD */}
-            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 space-y-10 shadow-xl">
-              {/* Toggle Tabs */}
-              <div className="p-1 bg-black border border-neutral-800 rounded-full w-fit flex items-center">
-                <button className="bg-amber-500 text-black font-medium rounded-full px-8 py-2.5 text-sm flex items-center gap-2">
-                  <Home className="w-4 h-4" /> Residential
+            {/* 🌑 LEFT SIDE — CONTROL PANEL (#0E1217) */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2, ease: luxuryEase }}
+              className="bg-[#0E1217] border border-white/[0.06] rounded-[40px] p-8 lg:p-10 space-y-12 shadow-lg relative overflow-hidden"
+            >
+              {/* Type Toggle - Architectural Lock */}
+              <div className="bg-[#14191F] border border-white/[0.08] p-1 rounded-full flex relative h-[56px] w-full max-w-[340px] overflow-hidden mx-auto lg:mx-0">
+                <motion.div
+                  className="absolute inset-y-1 left-1 bg-[#F5A623] rounded-full shadow-md z-0"
+                  initial={false}
+                  animate={{
+                    x: isCommercial ? '100%' : '0%'
+                  }}
+                  style={{ width: 'calc(50% - 4px)' }}
+                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                />
+                <button
+                  onClick={() => setIsCommercial(false)}
+                  className={cn(
+                    "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
+                    !isCommercial ? "text-[#0B0F14]" : "text-neutral-500 hover:text-neutral-300"
+                  )}
+                >
+                  Residential
                 </button>
-                <button className="text-neutral-400 hover:text-white rounded-full px-8 py-2.5 text-sm transition-colors flex items-center gap-2">
-                  <Layout className="w-4 h-4" /> Commercial
+                <button
+                  onClick={() => setIsCommercial(true)}
+                  className={cn(
+                    "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
+                    isCommercial ? "text-[#0B0F14]" : "text-neutral-500 hover:text-neutral-300"
+                  )}
+                >
+                  Commercial
                 </button>
               </div>
 
               {/* Input Fields */}
-              <div className="space-y-6">
-                <div className="grid md:grid-cols-2 gap-6">
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">Avg. Monthly Bill (₹)</label>
-                    <div className="relative">
-                      <span className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 font-semibold">₹</span>
-                      <input
-                        type="text"
-                        placeholder="15,000"
-                        className="bg-black border border-neutral-800 rounded-lg pl-8 pr-4 py-3.5 text-white w-full focus:border-amber-500 outline-hidden transition-colors"
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">Location</label>
-                    <div className="relative">
-                      <MapPin className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-500 w-4 h-4" />
-                      <input
-                        type="text"
-                        placeholder="Mumbai, MH"
-                        className="bg-black border border-neutral-800 rounded-lg pl-10 pr-4 py-3.5 text-white w-full focus:border-amber-500 outline-hidden transition-colors"
-                      />
-                    </div>
-                  </div>
+              <div className="space-y-8">
+                <div className="grid grid-cols-2 gap-4">
+                  <InputField
+                    label="Monthly Bill (₹)"
+                    icon={<Zap className="w-4 h-4" />}
+                    value={monthlyBill}
+                    onChange={(val: any) => setMonthlyBill(val)}
+                    type="number"
+                  />
+                  <InputField
+                    label="Location"
+                    icon={<MapPin className="w-4 h-4" />}
+                    value={location}
+                    onChange={(val: any) => setLocation(val)}
+                  />
                 </div>
+                <InputField
+                  label="Roof Area (sq. ft)"
+                  icon={<Layout className="w-4 h-4" />}
+                  value={roofArea}
+                  onChange={(val: any) => setRoofArea(val)}
+                  type="number"
+                />
+              </div>
 
-                <div className="space-y-3">
-                  <label className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">ROOF TYPE</label>
-                  <select
-                    className="bg-black border border-neutral-800 rounded-lg px-4 py-3.5 text-white w-full focus:border-amber-500 outline-hidden transition-colors appearance-none cursor-pointer"
-                    defaultValue="RCC Flat Roof"
+              {/* Action */}
+              <div className="pt-4 space-y-6">
+                <Magnetic amount={0.03}>
+                  <Button
+                    onClick={handleCalculate}
+                    className="w-full bg-[#F5A623] hover:bg-[#F5A623]/90 text-black font-black h-16 rounded-2xl border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-4 active:scale-95 group"
                   >
-                    <option value="RCC Flat Roof">RCC Flat Roof</option>
-                    <option value="Metal Sheet Roof">Metal Sheet Roof</option>
-                    <option value="Tiled Roof">Tiled Roof</option>
-                    <option value="Industrial Shed">Industrial Shed</option>
-                    <option value="Terrace with Obstructions">Terrace with Obstructions</option>
-                    <option value="Not Sure">Not Sure</option>
-                  </select>
+                    <span className="relative z-10 uppercase tracking-[0.3em]">Calculate Savings</span>
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </Button>
+                </Magnetic>
+                <div className="flex items-start gap-3 px-1 opacity-40">
+                  <Info className="w-3.5 h-3.5 mt-0.5" />
+                  <p className="text-[9px] font-bold uppercase tracking-widest leading-relaxed">
+                    Based on current tariff slabs & average insolation data.
+                  </p>
                 </div>
               </div>
+            </motion.div>
 
-              {/* Primary Button */}
-              <div className="space-y-4">
-                <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-5 rounded-xl border-none text-base tracking-tight flex items-center justify-center gap-2">
-                  CALCULATE SAVINGS <ArrowRight className="w-4 h-4" />
-                </Button>
-                <p className="text-[10px] text-neutral-600 font-medium leading-relaxed italic text-center">
-                  *Estimates based on average solar irradiance data in India. Actual savings may vary.
-                </p>
+            {/* 🌑 RIGHT SIDE — ANALYSIS DASHBOARD (#11161C) */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.3, ease: luxuryEase }}
+              className="bg-[#11161C] border border-white/[0.06] rounded-[48px] p-8 lg:p-12 space-y-12 overflow-hidden shadow-2xl relative flex flex-col justify-center"
+            >
+              {/* Internal Grid Alignment */}
+              <div className="space-y-12">
+                {/* Secondary Header */}
+                <div className="flex justify-between items-center opacity-40 border-b border-white/[0.05] pb-6">
+                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">
+                    <div className="w-2 h-2 rounded-full bg-[#F5A623]" />
+                    Impact Terminal
+                  </div>
+                  <Share2 className="w-3.5 h-3.5 cursor-pointer hover:text-white transition-colors" />
+                </div>
+
+                {/* Primary Stats */}
+                <div className="grid md:grid-cols-2 gap-6">
+                  <StatTile
+                    label="Annual Savings"
+                    value={<Counter value={isCalculated ? annualSavings : 0} isCurrency />}
+                    sub="Fiscal year 01 target"
+                    icon={<Zap className="w-5 h-5 text-neutral-700" />}
+                  />
+                  <StatTile
+                    label="Payback Period"
+                    value={<Counter value={isCalculated ? paybackPeriod : 0} decimals={1} />}
+                    suffix=" Years"
+                    sub="Full ROI milestone"
+                    icon={<Calendar className="w-5 h-5 text-neutral-700" />}
+                  />
+                </div>
+
+                {/* Growth Projection Card */}
+                <div className="bg-[#0B0F14] border border-white/[0.07] rounded-[40px] p-8 lg:p-10 space-y-10 relative overflow-hidden group">
+                  <div className="flex flex-col lg:flex-row justify-between items-start gap-8 relative z-10">
+                    <div className="space-y-10 flex-1">
+                      <div className="flex justify-between items-center">
+                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-500">Asset Valuation Projection</p>
+                        <div className="flex bg-[#151A20] rounded-full p-1 border border-white/[0.08] relative min-w-[110px] gap-[6px] shadow-inner mb-2 lg:mb-0">
+                          {/* Sliding Amber Pill */}
+                          <motion.div
+                            className="absolute inset-y-[4px] left-[4px] bg-[#F5A623] rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]"
+                            initial={false}
+                            animate={{
+                              x: projectionYear === 10 ? '0%' : '106%',
+                              width: 'calc(50% - 3px)'
+                            }}
+                            transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                          />
+                          {[10, 25].map(y => (
+                            <button
+                              key={y}
+                              onClick={() => setProjectionYear(y)}
+                              className={cn(
+                                "flex-1 relative z-10 py-1.5 text-center text-[10px] font-bold tracking-widest rounded-full transition-colors duration-300",
+                                projectionYear === y
+                                  ? "text-[#0B0F14]"
+                                  : "text-white/65 hover:text-white"
+                              )}
+                            >
+                              {y}Y
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="space-y-2">
+                        <div className="text-4xl lg:text-7xl font-bold text-white tracking-tighter leading-none max-w-full overflow-hidden">
+                          <Counter value={isCalculated ? lifetimeSavings : 0} isCurrency />
+                        </div>
+                        <p className="text-[10px] text-neutral-600 font-bold uppercase tracking-[0.3em]">Cumulative Financial Sovereignty</p>
+                      </div>
+                    </div>
+
+                    {/* Simple Data Projection Overlay */}
+                    <div className="w-full lg:w-[320px] h-40 flex items-end gap-4 pt-6">
+                      {[15, 25, 40, 55, 80, 100].map((h, i) => (
+                        <div key={i} className="flex-1 flex flex-col gap-3 items-center">
+                          <div className="w-full bg-white/[0.03] rounded-t-lg h-24 relative overflow-hidden">
+                            <motion.div
+                              initial={{ height: 0 }}
+                              animate={{ height: isCalculated ? `${h}%` : 0 }}
+                              transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
+                              className={cn(
+                                "absolute bottom-0 left-0 w-full transition-all duration-700",
+                                i === 5 ? "bg-[#F5A623]" : "bg-white/10"
+                              )}
+                            />
+                          </div>
+                          <span className="text-[7px] font-black text-neutral-800 uppercase tracking-widest">Y{(projectionYear / 5) * i}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ecological Analysis */}
+                <div className="grid md:grid-cols-2 gap-6 pt-4">
+                  <EcoCard
+                    icon={<Trees className="w-5 h-5" />}
+                    value={isCalculated ? treesPlanted : 0}
+                    labelSecondary="Trees Saved"
+                  />
+                  <EcoCard
+                    icon={<Wind className="w-5 h-5" />}
+                    value={isCalculated ? co2Avoided : 0}
+                    labelSecondary="Tons CO₂ Avoided"
+                  />
+                </div>
               </div>
+            </motion.div>
+          </div>
+        </Container>
+      </Section>
+
+      {/* 🏆 PREMIUM ASSESSMENT SECTION */}
+      <Section className="bg-[#0E1217] py-32 mt-32">
+        <Container className="max-w-[1100px] mx-auto px-6 text-center">
+          <div className="space-y-12">
+            <div className="space-y-4">
+              <span className="text-[#F5A623] text-[10px] font-black uppercase tracking-[0.6em] block">
+                FREE SOLAR ASSESSMENT
+              </span>
+              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
+                Ready to Take Control of Your <br />
+                <span className="text-[#F5A623]">Energy Costs?</span>
+              </h2>
+              <p className="text-white/60 text-lg max-w-xl mx-auto font-medium">
+                Receive a detailed engineering-grade savings projection tailored to your property.
+              </p>
             </div>
 
-            {/* RIGHT SIDE — PROJECTED IMPACT PANEL */}
-            <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 lg:p-10 space-y-10 shadow-2xl relative overflow-hidden group">
-              <div className="absolute top-0 left-0 w-full h-[2px] bg-amber-500/20" />
-
-              <div className="flex justify-between items-start">
-                <div className="space-y-2">
-                  <h2 className="text-3xl font-semibold text-white">Projected Impact</h2>
-                  <p className="text-neutral-500 text-sm font-medium">Based on current tariff rates</p>
-                </div>
-                <button className="p-2 border border-neutral-800 rounded-full hover:bg-neutral-800 transition-colors">
-                  <Share2 className="w-4 h-4 text-neutral-400" />
-                </button>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-6">
-                {/* Annual Savings Card */}
-                <div className="bg-black border border-neutral-800 rounded-xl p-8 space-y-6 relative overflow-hidden h-full">
-                  <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center">
-                    <Zap className="w-5 h-5 text-amber-500" />
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">ANNUAL SAVINGS</p>
-                    <p className="text-4xl font-semibold text-white">₹1.45 L</p>
-                  </div>
-                  <div className="inline-flex items-center gap-2 px-3 py-1 bg-amber-500/10 border border-amber-500/20 rounded-full">
-                    <TrendingUp className="w-3 h-3 text-amber-500" />
-                    <span className="text-[10px] text-amber-500 font-bold uppercase tracking-wider">+12% vs grid</span>
-                  </div>
-                </div>
-
-                {/* Payback Card */}
-                <div className="bg-black border border-neutral-800 rounded-xl p-8 space-y-6 relative overflow-hidden h-full">
-                  <div className="w-10 h-10 rounded-full bg-neutral-900 border border-neutral-800 flex items-center justify-center text-amber-500">
-                    <Calendar className="w-5 h-5" />
-                  </div>
-                  <div className="space-y-2">
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">PAYBACK PERIOD</p>
-                    <p className="text-4xl font-semibold text-white">3.2 <span className="text-xl text-neutral-500">Years</span></p>
-                  </div>
-                  <p className="text-[10px] text-neutral-600 font-bold uppercase tracking-wider">ROI Starts June 2027</p>
-                </div>
-              </div>
-
-              {/* 25-Year Projection Card */}
-              <div className="bg-black border border-neutral-800 rounded-xl p-10 space-y-8 relative overflow-hidden">
-                <div className="flex justify-between items-end">
-                  <div className="space-y-2">
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">25-YEAR TOTAL BENEFIT</p>
-                    <p className="text-4xl lg:text-5xl font-semibold text-white">₹52.4 Lakhs</p>
-                  </div>
-                  <div className="hidden md:block text-right">
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-700 font-bold">LIFETIME SAVINGS</p>
-                  </div>
-                </div>
-
-                {/* Visual Chart Placeholder */}
-                <div className="h-[160px] flex items-end gap-3 pt-4">
-                  {[35, 45, 60, 55, 75, 90, 100].map((h, i) => (
-                    <div
-                      key={i}
-                      style={{ height: `${h}%` }}
-                      className={`flex-1 rounded-t-xs transition-colors duration-500 ${i === 6 ? 'bg-amber-500' :
-                        i > 3 ? 'bg-amber-500/60' :
-                          i > 1 ? 'bg-neutral-800' : 'bg-neutral-900'
-                        }`}
-                    />
-                  ))}
-                </div>
-                <div className="flex justify-between text-[10px] uppercase tracking-widest text-neutral-500 font-bold font-mono">
-                  <span>Today</span>
-                  <span>2049</span>
-                </div>
-              </div>
-
-              {/* Environmental Impact Row */}
-              <div className="grid md:grid-cols-2 gap-6">
-                <div className="bg-black border border-neutral-800 rounded-xl p-6 flex items-center gap-6 group/item hover:border-neutral-700 transition-colors">
-                  <div className="w-12 h-12 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
-                    <Trees className="w-6 h-6 text-neutral-400 group-hover/item:text-amber-500 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-semibold text-white">124</p>
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">Trees Saved</p>
-                  </div>
-                </div>
-                <div className="bg-black border border-neutral-800 rounded-xl p-6 flex items-center gap-6 group/item hover:border-neutral-700 transition-colors">
-                  <div className="w-12 h-12 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center shrink-0">
-                    <Wind className="w-6 h-6 text-neutral-400 group-hover/item:text-amber-500 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-2xl font-semibold text-white">8.5 T</p>
-                    <p className="text-[10px] uppercase tracking-widest text-neutral-500 font-bold">CO₂ Avoided</p>
-                  </div>
-                </div>
-              </div>
+            <div className="pt-4">
+              <Magnetic amount={0.04}>
+                <Button
+                  className="bg-gradient-to-r from-[#F5A623] to-[#D97706] text-black font-black h-16 px-12 rounded-2xl border-none text-[12px] tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-xl uppercase group"
+                >
+                  Get Your Free Solar Assessment
+                </Button>
+              </Magnetic>
             </div>
           </div>
         </Container>
       </Section>
+
+      <div className="h-32" />
     </main>
   );
 }
 
-function ArrowRight(props: any) {
+function InputField({ label, icon, value, onChange, type = "text" }: any) {
   return (
-    <svg
-      {...props}
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-    >
-      <path d="M5 12h14" />
-      <path d="m12 5 7 7-7 7" />
-    </svg>
+    <div className="space-y-4 group">
+      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-600 block pl-1">{label}</label>
+      <div className="relative">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-neutral-800 group-focus-within:text-[#F5A623] transition-colors duration-500">
+          {icon}
+        </div>
+        <input
+          type={type}
+          value={value}
+          onChange={(e) => onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
+          className="w-full bg-black/40 border border-white/[0.08] rounded-2xl h-14 pl-14 pr-4 text-sm font-semibold text-white focus:border-[#F5A623]/40 outline-none transition-all"
+        />
+      </div>
+    </div>
+  );
+}
+
+function StatTile({ label, value, sub, icon, suffix = "" }: any) {
+  return (
+    <div className="bg-[#0B0F14] border border-white/[0.06] rounded-[32px] p-8 space-y-4 relative overflow-hidden group shadow-xl">
+      <div className="flex justify-between items-center text-[9px] font-black text-neutral-600 uppercase tracking-widest">
+        {label}
+        {icon}
+      </div>
+      <div className="space-y-3">
+        <div className="text-4xl lg:text-5xl font-bold text-white tracking-tight flex items-baseline">
+          {value}
+          <span className="text-lg text-neutral-600 ml-2 font-medium">{suffix}</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-0.5 h-3 bg-[#F5A623] rounded-full" />
+          <p className="text-[9px] text-neutral-600 font-bold uppercase tracking-widest">{sub}</p>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function EcoCard({ icon, value, labelSecondary }: any) {
+  return (
+    <div className="bg-[#0B0F14]/50 border border-white/[0.04] rounded-[32px] p-[28px] flex-1 min-w-0 flex items-center gap-[20px] group transition-all min-h-[140px]">
+      <div className="w-16 h-16 rounded-full bg-black/40 border border-white/5 flex items-center justify-center relative flex-shrink-0">
+        <svg className="absolute inset-0 w-full h-full -rotate-90">
+          <motion.circle
+            cx="32" cy="32" r="30"
+            fill="none"
+            stroke="#F5A623"
+            strokeWidth="1.5"
+            strokeDasharray="188"
+            initial={{ strokeDashoffset: 188 }}
+            whileInView={{ strokeDashoffset: 120 }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
+            className="opacity-20"
+          />
+        </svg>
+        <div className="text-neutral-700 group-hover:text-[#F5A623] transition-colors duration-500">
+          {icon}
+        </div>
+      </div>
+      <div>
+        <div className="text-[clamp(26px,2.5vw,36px)] font-bold text-white leading-[1.1] break-keep">
+          <Counter value={value} decimals={0} />
+        </div>
+        <p className="text-[14px] font-bold text-white opacity-65 uppercase tracking-widest mt-1">
+          {labelSecondary}
+        </p>
+      </div>
+    </div>
   );
 }
