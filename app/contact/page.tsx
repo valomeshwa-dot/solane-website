@@ -193,7 +193,7 @@ export default function ContactPage() {
                   <div className="p-8 lg:p-12 bg-[#0b0b0b] rounded-[24px] space-y-8 relative z-10 transition-transform duration-500 hover:-translate-y-1">
                     <div className="flex items-center gap-6">
                       <div className="w-12 h-12 rounded-[12px] bg-black border border-white/[0.05] flex items-center justify-center transition-all duration-500 group-hover:border-amber-500/30">
-                        {React.cloneElement(card.icon as React.ReactElement, { className: 'w-5 h-5 text-amber-500' })}
+                        {React.cloneElement(card.icon as React.ReactElement<{ className?: string }>, { className: 'w-5 h-5 text-amber-500' })}
                       </div>
                       <h3 className="text-xl font-semibold text-white tracking-tight">{card.title}</h3>
                     </div>

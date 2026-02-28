@@ -9,8 +9,6 @@ import { motion, AnimatePresence, animate } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Magnetic } from '@/components/ui/Magnetic';
 
-const luxuryEase = [0.16, 1, 0.3, 1];
-
 const formatCurrency = (val: number) => {
   if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
   if (val >= 100000) return `₹${(val / 100000).toFixed(2)} L`;
@@ -23,7 +21,7 @@ function Counter({ value, decimals = 0, prefix = "", suffix = "", isCurrency = f
   useEffect(() => {
     const controls = animate(displayValue, value, {
       duration: 1.5,
-      ease: luxuryEase,
+      ease: "easeInOut",
       onUpdate: (latest) => setDisplayValue(latest)
     });
     return () => controls.stop();
@@ -66,7 +64,7 @@ export default function SolarCalculator() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: luxuryEase }}
+            transition={{ duration: 0.8, ease: "easeInOut" }}
             className="space-y-6"
           >
             <div className="flex items-center gap-3 justify-center lg:justify-start">
@@ -101,7 +99,7 @@ export default function SolarCalculator() {
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: luxuryEase }}
+              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
               className="bg-[#0E1217] border border-white/[0.06] rounded-[40px] p-8 lg:p-10 space-y-12 shadow-lg relative overflow-hidden"
             >
               {/* Type Toggle - Architectural Lock */}
@@ -185,7 +183,7 @@ export default function SolarCalculator() {
             <motion.div
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: luxuryEase }}
+              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
               className="bg-[#11161C] border border-white/[0.06] rounded-[48px] p-8 lg:p-12 space-y-12 overflow-hidden shadow-2xl relative flex flex-col justify-center"
             >
               {/* Internal Grid Alignment */}
