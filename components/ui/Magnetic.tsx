@@ -40,5 +40,3 @@ export default function Magnetic({ children, amount }: { children: React.ReactNo
         </motion.div>
     );
 }
-
-export { Magnetic };

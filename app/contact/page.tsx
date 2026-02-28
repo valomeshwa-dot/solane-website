@@ -6,7 +6,7 @@ import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
 import { MapPin, Phone, Mail, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { Magnetic } from '@/components/ui/Magnetic';
+import Magnetic from '@/components/ui/Magnetic';
 
 export default function ContactPage() {
   return (

@@ -6,7 +6,7 @@ import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
 import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Users, Leaf, Globe, Search, Heart, Award } from 'lucide-react';
 import { motion, AnimatePresence, animate } from 'framer-motion';
-import { Magnetic } from '@/components/ui/Magnetic';
+import Magnetic from '@/components/ui/Magnetic';
 
 function Counter({ value, decimals = 0, prefix = "", suffix = "" }: { value: number; decimals?: number; prefix?: string; suffix?: string }) {
   const [displayValue, setDisplayValue] = React.useState(0);

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { MapPin, Zap, Layout, Calendar, TrendingUp, Trees, Wind, ArrowRight, Share2, Info, ChevronUp } from 'lucide-react';
 import { motion, AnimatePresence, animate } from 'framer-motion';
 import { cn } from '@/lib/utils';
-import { Magnetic } from '@/components/ui/Magnetic';
+import Magnetic from '@/components/ui/Magnetic';
 
 const formatCurrency = (val: number) => {
   if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
