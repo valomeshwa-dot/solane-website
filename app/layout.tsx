@@ -17,8 +17,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} scroll-smooth`}>
-      <body className="font-sans bg-background text-text-primary antialiased min-h-screen" suppressHydrationWarning>
-        <div className="grain-overlay" />
+      <body className="bg-[#0B0F14] text-white antialiased min-h-screen" suppressHydrationWarning>
         <Navbar />
         <main>
           {children}

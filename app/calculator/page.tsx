@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
-import { MapPin, Zap, Layout, Calendar, TrendingUp, Trees, Wind, ArrowRight, Share2, Info, ChevronUp } from 'lucide-react';
+import { MapPin, Zap, Layout, Calendar, TrendingUp, Trees, Wind, ArrowRight, Share2, Info, ChevronUp, HelpCircle } from 'lucide-react';
 import { motion, AnimatePresence, animate } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import Magnetic from '@/components/ui/Magnetic';
@@ -21,19 +21,25 @@ function Counter({ value, decimals = 0, prefix = "", suffix = "", isCurrency = f
   useEffect(() => {
     const controls = animate(displayValue, value, {
       duration: 1.5,
-      ease: "easeInOut",
+      ease: "easeOut",
       onUpdate: (latest) => setDisplayValue(latest)
     });
     return () => controls.stop();
   }, [value, displayValue]);
 
   return (
-    <span className="whitespace-nowrap">
+    <motion.span
+      key={value}
+      initial={{ scale: 0.95, opacity: 0.8 }}
+      animate={{ scale: 1, opacity: 1 }}
+      transition={{ duration: 0.5, ease: "easeOut" }}
+      className="whitespace-nowrap"
+    >
       {isCurrency ? formatCurrency(displayValue) : `${prefix}${displayValue.toLocaleString(undefined, {
         minimumFractionDigits: decimals,
         maximumFractionDigits: decimals
       })}${suffix}`}
-    </span>
+    </motion.span>
   );
 }
 
@@ -41,8 +47,9 @@ export default function SolarCalculator() {
   const [isCommercial, setIsCommercial] = useState(false);
   const [monthlyBill, setMonthlyBill] = useState(8000);
   const [location, setLocation] = useState('Maharashtra');
-  const [roofArea, setRoofArea] = useState(1200);
+  const [roofType, setRoofType] = useState('RCC Flat Roof');
   const [isCalculated, setIsCalculated] = useState(false);
+  const [isCalculating, setIsCalculating] = useState(false);
   const [projectionYear, setProjectionYear] = useState(25);
 
   const annualSavings = monthlyBill * 0.9 * 12;
@@ -52,25 +59,18 @@ export default function SolarCalculator() {
   const treesPlanted = Math.round(co2Avoided / 20);
 
   const handleCalculate = () => {
-    setIsCalculated(true);
+    setIsCalculating(true);
+    setTimeout(() => {
+      setIsCalculating(false);
+      setIsCalculated(true);
+    }, 1200);
   };
 
   return (
-    <motion.main
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8, ease: "easeOut" }}
-      className="min-h-screen bg-[#0B0F14] text-[#FFFFFF] font-sans selection:bg-amber-500/30 overflow-x-hidden relative"
-    >
-      {/* Subtle Background Glow Animation */}
-      <motion.div
-        animate={{ opacity: [0.4, 0.6, 0.4] }}
-        transition={{ duration: 6, repeat: Infinity }}
-        className="absolute top-0 left-0 right-0 h-[800px] bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/5 blur-3xl pointer-events-none z-0"
-      />
+    <div className="min-h-screen bg-[#0B0F14]">
 
-      {/* 🏙️ Hero Content */}
-      <Section className="pt-32 pb-20 lg:pt-48 lg:pb-24">
+      {/* Hero Content */}
+      <Section className="pt-32 pb-16 lg:pt-40 lg:pb-20 relative z-10">
         <Container className="max-w-[1200px] mx-auto px-6 text-center lg:text-left">
           <motion.div
             initial="hidden"
@@ -81,7 +81,7 @@ export default function SolarCalculator() {
                 transition: { staggerChildren: 0.15 }
               }
             }}
-            className="space-y-6 relative z-10"
+            className="space-y-6"
           >
             <motion.div
               variants={{
@@ -90,37 +90,32 @@ export default function SolarCalculator() {
               }}
               className="flex items-center gap-3 justify-center lg:justify-start"
             >
-              <div className="bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
-                <Zap className="w-3 h-3 text-[#F5A623] fill-[#F5A623]" />
+              <div className="bg-yellow-500/10 border border-yellow-500/20 px-3 py-1 rounded-full">
+                <Zap className="w-3 h-3 text-yellow-500 fill-yellow-500" />
               </div>
-              <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500">ROI Calculator</span>
+              <span className="text-xs font-bold uppercase tracking-wide text-neutral-400">ROI Calculator</span>
             </motion.div>
 
             <div className="max-w-3xl space-y-4">
               <motion.h1
                 variants={{
-                  hidden: { opacity: 0, y: 20 },
+                  hidden: { opacity: 0, y: 30 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05]"
+                className="text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight"
               >
-                Calculate Your Solar <br />
-                <span className="relative inline-block text-[#FFFFFF]">
+                Calculate Your Solar{" "}
+                <span className="text-amber-500">
                   ROI
-                  <motion.div
-                    initial={{ width: 0 }}
-                    animate={{ width: "100%" }}
-                    transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-                    className="absolute -bottom-1 left-0 h-[2px] bg-[#F5A623]"
-                  />
-                </span> In Minutes
+                </span>{" "}
+                In Minutes
               </motion.h1>
               <motion.p
                 variants={{
                   hidden: { opacity: 0, y: 20 },
                   visible: { opacity: 1, y: 0 }
                 }}
-                className="text-[#FFFFFF]/70 text-base lg:text-lg leading-relaxed max-w-[500px] font-medium"
+                className="text-neutral-400 text-lg leading-relaxed max-w-[600px] font-medium"
               >
                 High-precision modeling for solar asset performance and multi-decade financial sovereignty.
               </motion.p>
@@ -129,29 +124,29 @@ export default function SolarCalculator() {
         </Container>
       </Section>
 
-      {/* 📊 Calculator Core */}
-      <Section className="pb-32 lg:pb-48">
+      {/* Calculator Core */}
+      <Section className="pb-32 lg:pb-48 relative z-10">
         <Container className="max-w-[1200px] mx-auto px-6 overflow-hidden">
-          <div className="grid lg:grid-cols-[460px_1fr] gap-12 lg:gap-16 items-start">
+          <div className="grid lg:grid-cols-[420px_1fr] gap-10 lg:gap-16 items-start">
 
-            {/* 🌑 LEFT SIDE — CONTROL PANEL (#0E1217) */}
+            {/* LEFT SIDE — CONTROL PANEL */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="bg-[#0E1217] border border-white/[0.06] rounded-[40px] p-8 lg:p-10 space-y-12 shadow-lg relative overflow-hidden"
+              className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-8 lg:p-10 shadow-[0_20px_80px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-500 ease-out"
             >
-              {/* Type Toggle - Architectural Lock */}
-              <div className="bg-[#14191F] border border-white/[0.08] p-1 rounded-full flex relative h-[56px] w-full max-w-[340px] overflow-hidden mx-auto lg:mx-0">
+              {/* Type Toggle */}
+              <div className="bg-[#14191F] border border-white/[0.08] p-1.5 rounded-xl flex relative mb-8 w-full max-w-[340px] mx-auto lg:mx-0 shadow-inner">
                 <motion.div
-                  className="absolute inset-y-1 left-1 bg-[#F5A623] rounded-full shadow-md z-0"
+                  className="absolute inset-y-1.5 left-1.5 bg-amber-500 rounded-lg shadow-md z-0"
                   initial={false}
                   animate={{
                     x: isCommercial ? '100%' : '0%'
                   }}
-                  style={{ width: 'calc(50% - 4px)' }}
-                  transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+                  style={{ width: 'calc(50% - 6px)' }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
                 />
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -159,8 +154,8 @@ export default function SolarCalculator() {
                   transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(false)}
                   className={cn(
-                    "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
-                    !isCommercial ? "text-[#0B0F14]" : "text-neutral-500 hover:text-neutral-300"
+                    "flex-1 relative z-10 py-2.5 text-xs font-bold uppercase tracking-wide transition-colors duration-300 text-center rounded-lg",
+                    !isCommercial ? "text-black" : "text-neutral-400 hover:text-white"
                   )}
                 >
                   Residential
@@ -171,8 +166,8 @@ export default function SolarCalculator() {
                   transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(true)}
                   className={cn(
-                    "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
-                    isCommercial ? "text-[#0B0F14]" : "text-neutral-500 hover:text-neutral-300"
+                    "flex-1 relative z-10 py-2.5 text-xs font-bold uppercase tracking-wide transition-colors duration-300 text-center rounded-lg",
+                    isCommercial ? "text-black" : "text-neutral-400 hover:text-white"
                   )}
                 >
                   Commercial
@@ -181,9 +176,16 @@ export default function SolarCalculator() {
 
               {/* Input Fields */}
               <div className="space-y-8">
-                <div className="grid grid-cols-2 gap-4">
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.1 }}
+                  viewport={{ once: true }}
+                  className="grid grid-cols-2 gap-4"
+                >
                   <InputField
                     label="Monthly Bill (₹)"
+                    tooltip="Average electricity bill per month"
                     icon={<Zap className="w-4 h-4" />}
                     value={monthlyBill}
                     onChange={(val: any) => setMonthlyBill(val)}
@@ -191,63 +193,95 @@ export default function SolarCalculator() {
                   />
                   <InputField
                     label="Location"
+                    tooltip="Your city/state for average solar irradiance data"
                     icon={<MapPin className="w-4 h-4" />}
                     value={location}
                     onChange={(val: any) => setLocation(val)}
                   />
-                </div>
-                <InputField
-                  label="Roof Area (sq. ft)"
-                  icon={<Layout className="w-4 h-4" />}
-                  value={roofArea}
-                  onChange={(val: any) => setRoofArea(val)}
-                  type="number"
-                />
+                </motion.div>
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.2 }}
+                  viewport={{ once: true }}
+                >
+                  <SelectField
+                    label="Roof Type"
+                    tooltip="Select the type of roof your property has"
+                    icon={<Layout className="w-4 h-4" />}
+                    value={roofType}
+                    onChange={(val: any) => setRoofType(val)}
+                    options={['RCC Flat Roof', 'Tin Shed', 'Tiled Roof', 'Sloped Concrete', 'Other']}
+                  />
+                </motion.div>
               </div>
 
               {/* Action */}
-              <div className="pt-4 space-y-6">
-                <Magnetic amount={0.03}>
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: "easeOut" }}
+                className="pt-8 mt-6 w-full"
+              >
+                <Magnetic amount={0.25} className="w-full block">
                   <motion.button
-                    whileHover={{
-                      scale: 1.04,
-                      boxShadow: "0px 0px 30px rgba(245, 166, 35, 0.4)"
+                    animate={{
+                      boxShadow: [
+                        "0px 0px 0px rgba(234,179,8,0)",
+                        "0px 0px 25px rgba(234,179,8,0.3)",
+                        "0px 0px 0px rgba(234,179,8,0)"
+                      ]
                     }}
-                    whileTap={{ scale: 0.97 }}
-                    transition={{ duration: 0.25 }}
+                    transition={{
+                      duration: 2.5,
+                      repeat: Infinity,
+                      ease: "easeInOut"
+                    }}
+                    whileHover={{ scale: 1.03 }}
+                    whileTap={{ scale: 0.96 }}
                     onClick={handleCalculate}
-                    className="w-full bg-[#F5A623] text-black font-black h-16 rounded-2xl border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-4 group"
+                    className="w-full bg-amber-500 hover:bg-amber-600 text-black font-semibold h-14 px-10 rounded-xl text-base tracking-wide uppercase flex items-center justify-center gap-3 group relative overflow-hidden transition-all duration-300 ease-out hover:shadow-[0_0_30px_rgba(234,179,8,0.3)] active:scale-95 before:absolute before:inset-0 before:rounded-xl before:bg-white/10 before:opacity-0 hover:before:opacity-100 before:transition"
                   >
-                    <span className="relative z-10 uppercase tracking-[0.3em]">Calculate Savings</span>
-                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                    <span className="relative z-10">Calculate Savings</span>
+                    <ArrowRight className="w-6 h-6 transition-transform group-hover:translate-x-1 relative z-10" />
                   </motion.button>
                 </Magnetic>
-                <div className="flex items-start gap-3 px-1 opacity-40">
-                  <Info className="w-3.5 h-3.5 mt-0.5" />
-                  <p className="text-[9px] font-bold uppercase tracking-widest leading-relaxed">
-                    Based on current tariff slabs & average insolation data.
-                  </p>
-                </div>
-              </div>
+              </motion.div>
             </motion.div>
 
-            {/* 🌑 RIGHT SIDE — ANALYSIS DASHBOARD (#11161C) */}
+            {/* RIGHT SIDE — ANALYSIS DASHBOARD */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.97 }}
-              whileInView={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
               viewport={{ once: true }}
-              className="bg-[#11161C] border border-white/[0.06] rounded-[48px] p-8 lg:p-12 space-y-12 overflow-hidden shadow-2xl relative flex flex-col justify-center"
+              className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-10 lg:p-14 space-y-12 overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.6)] relative flex flex-col justify-center transition-all duration-500 ease-out"
             >
+              {/* Shimmer Overlay */}
+              <AnimatePresence>
+                {isCalculating && (
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.3 }}
+                    className="absolute inset-0 bg-[#0F141A]/95 z-50 flex flex-col items-center justify-center rounded-2xl"
+                  >
+                    <div className="w-12 h-12 border-4 border-amber-500/20 border-t-amber-500 rounded-full animate-spin"></div>
+                    <p className="mt-6 text-amber-500 font-bold tracking-widest text-xs uppercase animate-pulse">Running Simulation...</p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Internal Grid Alignment */}
               <div className="space-y-12">
                 {/* Secondary Header */}
-                <div className="flex justify-between items-center opacity-40 border-b border-white/[0.05] pb-6">
-                  <div className="flex items-center gap-4 text-[10px] font-black uppercase tracking-[0.4em] text-neutral-400">
-                    <div className="w-2 h-2 rounded-full bg-[#F5A623]" />
+                <div className="flex justify-between items-center opacity-70 border-b border-white/[0.05] pb-5">
+                  <div className="flex items-center gap-3 text-xs font-bold uppercase tracking-wide text-neutral-400">
+                    <div className="w-2 h-2 rounded-full bg-amber-500 animate-pulse" />
                     Impact Terminal
                   </div>
-                  <Share2 className="w-3.5 h-3.5 cursor-pointer hover:text-white transition-colors" />
+                  <Share2 className="w-4 h-4 cursor-pointer hover:text-white transition-colors text-neutral-500" />
                 </div>
 
                 {/* Primary Stats */}
@@ -256,33 +290,37 @@ export default function SolarCalculator() {
                     label="Annual Savings"
                     value={<Counter value={isCalculated ? annualSavings : 0} isCurrency />}
                     sub="Fiscal year 01 target"
-                    icon={<Zap className="w-5 h-5 text-neutral-700" />}
+                    icon={<Zap className="w-4 h-4 text-amber-500" />}
                   />
                   <StatTile
                     label="Payback Period"
                     value={<Counter value={isCalculated ? paybackPeriod : 0} decimals={1} />}
                     suffix=" Years"
                     sub="Full ROI milestone"
-                    icon={<Calendar className="w-5 h-5 text-neutral-700" />}
+                    icon={<Calendar className="w-4 h-4 text-amber-500" />}
                   />
                 </div>
 
                 {/* Growth Projection Card */}
-                <div className="bg-[#0B0F14] border border-white/[0.07] rounded-[40px] p-8 lg:p-10 space-y-10 relative overflow-hidden group">
+                <motion.div
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                  className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-8 space-y-8 relative overflow-hidden group shadow-xl"
+                >
                   <div className="flex flex-col lg:flex-row justify-between items-start gap-8 relative z-10">
-                    <div className="space-y-10 flex-1">
+                    <div className="space-y-8 flex-1">
                       <div className="flex justify-between items-center">
-                        <p className="text-[10px] font-black uppercase tracking-[0.4em] text-neutral-500">Asset Valuation Projection</p>
-                        <div className="flex bg-[#151A20] rounded-full p-1 border border-white/[0.08] relative min-w-[110px] gap-[6px] shadow-inner mb-2 lg:mb-0">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.4em] text-neutral-500">Asset Valuation</p>
+                        <div className="flex bg-[#151A20] rounded-lg p-1 border border-white/[0.08] relative shadow-inner mb-2 lg:mb-0">
                           {/* Sliding Amber Pill */}
                           <motion.div
-                            className="absolute inset-y-[4px] left-[4px] bg-[#F5A623] rounded-full shadow-[inset_0_1px_2px_rgba(0,0,0,0.2)]"
+                            className="absolute inset-y-1 left-1 bg-amber-500 rounded-md shadow-sm"
                             initial={false}
                             animate={{
-                              x: projectionYear === 10 ? '0%' : '106%',
-                              width: 'calc(50% - 3px)'
+                              x: projectionYear === 10 ? '0%' : '100%',
+                              width: 'calc(50% - 4px)'
                             }}
-                            transition={{ type: "spring", stiffness: 400, damping: 35 }}
+                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
                           />
                           {[10, 25].map(y => (
                             <motion.button
@@ -291,10 +329,10 @@ export default function SolarCalculator() {
                               key={y}
                               onClick={() => setProjectionYear(y)}
                               className={cn(
-                                "flex-1 relative z-10 py-1.5 text-center text-[10px] font-bold tracking-widest rounded-full transition-colors duration-300",
+                                "relative z-10 px-4 py-1.5 text-center text-xs font-bold tracking-wide rounded-md transition-colors duration-300",
                                 projectionYear === y
-                                  ? "text-[#0B0F14]"
-                                  : "text-white/65 hover:text-white"
+                                  ? "text-black"
+                                  : "text-neutral-500 hover:text-white"
                               )}
                             >
                               {y}Y
@@ -304,44 +342,44 @@ export default function SolarCalculator() {
                       </div>
 
                       <div className="space-y-2">
-                        <div className="text-4xl lg:text-7xl font-bold text-white tracking-tighter leading-none max-w-full overflow-hidden">
+                        <div className="text-4xl lg:text-5xl font-extrabold text-white tracking-tight leading-none overflow-hidden pb-1">
                           <Counter value={isCalculated ? lifetimeSavings : 0} isCurrency />
                         </div>
-                        <p className="text-[10px] text-neutral-600 font-bold uppercase tracking-[0.3em]">Cumulative Financial Sovereignty</p>
+                        <p className="text-xs text-neutral-500 font-medium uppercase tracking-wide">Cumulative Financial Sovereignty</p>
                       </div>
                     </div>
 
                     {/* Simple Data Projection Overlay */}
-                    <div className="w-full lg:w-[320px] h-40 flex items-end gap-4 pt-6">
+                    <div className="w-full lg:w-[280px] h-32 flex items-end gap-3 pt-6">
                       {[15, 25, 40, 55, 80, 100].map((h, i) => (
-                        <div key={i} className="flex-1 flex flex-col gap-3 items-center">
-                          <div className="w-full bg-white/[0.03] rounded-t-lg h-24 relative overflow-hidden">
+                        <div key={i} className="flex-1 flex flex-col gap-2 items-center group/bar">
+                          <div className="w-full bg-white/[0.03] rounded-t-lg h-24 relative overflow-hidden group-hover/bar:bg-white/[0.06] transition-colors">
                             <motion.div
                               initial={{ height: 0 }}
                               animate={{ height: isCalculated ? `${h}%` : 0 }}
-                              transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
+                              transition={{ duration: 1.5, delay: i * 0.1, ease: "easeOut" }}
                               className={cn(
-                                "absolute bottom-0 left-0 w-full transition-all duration-700",
-                                i === 5 ? "bg-[#F5A623]" : "bg-white/10"
+                                "absolute bottom-0 left-0 w-full transition-all duration-700 rounded-t-sm",
+                                i === 5 ? "bg-amber-500" : "bg-neutral-700"
                               )}
                             />
                           </div>
-                          <span className="text-[7px] font-black text-neutral-800 uppercase tracking-widest">Y{(projectionYear / 5) * i}</span>
+                          <span className="text-[9px] font-bold text-neutral-500 uppercase tracking-wide">Y{(projectionYear / 5) * i}</span>
                         </div>
                       ))}
                     </div>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Ecological Analysis */}
-                <div className="grid md:grid-cols-2 gap-6 pt-4">
+                <div className="grid md:grid-cols-2 gap-6 pt-2">
                   <EcoCard
-                    icon={<Trees className="w-5 h-5" />}
+                    icon={<Trees className="w-6 h-6" />}
                     value={isCalculated ? treesPlanted : 0}
                     labelSecondary="Trees Saved"
                   />
                   <EcoCard
-                    icon={<Wind className="w-5 h-5" />}
+                    icon={<Wind className="w-6 h-6" />}
                     value={isCalculated ? co2Avoided : 0}
                     labelSecondary="Tons CO₂ Avoided"
                   />
@@ -352,75 +390,112 @@ export default function SolarCalculator() {
         </Container>
       </Section>
 
-      {/* 🏆 PREMIUM ASSESSMENT SECTION */}
-      <Section className="bg-[#0E1217] py-32 mt-32">
-        <Container className="max-w-[1100px] mx-auto px-6 text-center">
-          <div className="space-y-12">
-            <div className="space-y-4">
-              <span className="text-[#F5A623] text-[10px] font-black uppercase tracking-[0.6em] block">
-                FREE SOLAR ASSESSMENT
-              </span>
-              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white max-w-2xl mx-auto leading-[1.1]">
-                Ready to Take Control of Your <br />
-                <span className="text-[#F5A623]">Energy Costs?</span>
-              </h2>
-              <p className="text-white/60 text-lg max-w-xl mx-auto font-medium">
-                Receive a detailed engineering-grade savings projection tailored to your property.
-              </p>
-            </div>
+      {/* PREMIUM ASSESSMENT SECTION */}
+      <section className="py-28 bg-[#0B0F14] text-white">
+        <div className="max-w-4xl mx-auto text-center px-6">
 
-            <div className="pt-4">
-              <Magnetic amount={0.04}>
-                <motion.button
-                  whileHover={{
-                    scale: 1.04,
-                    boxShadow: "0px 0px 30px rgba(245, 166, 35, 0.4)"
-                  }}
-                  whileTap={{ scale: 0.97 }}
-                  transition={{ duration: 0.25 }}
-                  className="bg-gradient-to-r from-[#F5A623] to-[#D97706] text-black font-black h-16 px-12 rounded-2xl border-none text-[12px] tracking-[0.2em] shadow-xl uppercase group flex items-center justify-center mx-auto"
-                >
-                  REQUEST MY FREE SOLAR ASSESSMENT →
-                </motion.button>
-              </Magnetic>
+          <p className="text-xs tracking-[0.3em] text-yellow-500 mb-4 uppercase">
+            Free Solar Assessment
+          </p>
 
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.2 }}
-                viewport={{ once: true }}
-                className="pt-8 text-[10px] font-bold tracking-[0.3em] text-white/40 uppercase"
-              >
-                500+ ENGINEERING ASSESSMENTS COMPLETED
-              </motion.div>
-            </div>
+          <h2 className="text-4xl md:text-5xl font-bold leading-tight mb-6">
+            Ready to Take Control of Your <br />
+            <span className="text-yellow-500">Energy Costs?</span>
+          </h2>
+
+          <p className="text-neutral-400 text-lg mb-10">
+            Receive a detailed engineering-grade savings projection tailored to your property.
+          </p>
+
+          <div className="flex justify-center">
+            <Magnetic amount={0.25}>
+              <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-8 py-4 rounded-xl transition-all duration-300 ease-out">
+                REQUEST MY FREE SOLAR ASSESSMENT →
+              </button>
+            </Magnetic>
           </div>
-        </Container>
-      </Section>
+
+          <p className="mt-6 text-sm text-neutral-500">
+            500+ Engineering Assessments Completed
+          </p>
+
+        </div>
+      </section>
 
       <div className="h-32" />
-    </motion.main>
+    </div>
   );
 }
 
-function InputField({ label, icon, value, onChange, type = "text" }: any) {
+function InputField({ label, icon, value, onChange, type = "text", tooltip }: any) {
   return (
-    <div className="space-y-4 group">
-      <label className="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-600 block pl-1">{label}</label>
+    <div className="space-y-2 group relative">
+      <div className="flex items-center gap-2">
+        <label className="text-[9px] text-neutral-400 uppercase tracking-widest font-black block pl-1">{label}</label>
+        {tooltip && (
+          <div className="relative flex items-center group/tooltip cursor-help mb-0.5">
+            <HelpCircle className="w-3.5 h-3.5 text-neutral-600 hover:text-amber-500 transition-colors" />
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[200px] px-3 py-2 bg-neutral-800 text-white text-[10px] sm:text-xs rounded-lg shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50 transform group-hover/tooltip:-translate-y-1">
+              {tooltip}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-800" />
+            </div>
+          </div>
+        )}
+      </div>
       <motion.div
         whileHover={{ scale: 1.02 }}
         transition={{ duration: 0.2 }}
         className="relative"
       >
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-neutral-800 group-focus-within:text-[#F5A623] transition-colors duration-500">
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-amber-500 transition-colors duration-500">
           {icon}
         </div>
         <input
           type={type}
           value={value}
           onChange={(e) => onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
-          className="w-full bg-black/40 border border-white/[0.08] rounded-2xl h-14 pl-14 pr-4 text-sm font-semibold text-white focus:border-[#F5A623]/40 outline-none transition-all"
+          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-12 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/40 focus:ring-2 focus:ring-amber-500/40 outline-none transition-all"
         />
+      </motion.div>
+    </div>
+  );
+}
+
+function SelectField({ label, icon, value, onChange, options, tooltip }: any) {
+  return (
+    <div className="space-y-2 group relative">
+      <div className="flex items-center gap-2">
+        <label className="text-[9px] text-neutral-400 uppercase tracking-widest font-black block pl-1">{label}</label>
+        {tooltip && (
+          <div className="relative flex items-center group/tooltip cursor-help mb-0.5">
+            <HelpCircle className="w-3.5 h-3.5 text-neutral-600 hover:text-amber-500 transition-colors" />
+            <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-max max-w-[200px] px-3 py-2 bg-neutral-800 text-white text-[10px] sm:text-xs rounded-lg shadow-xl opacity-0 group-hover/tooltip:opacity-100 transition-opacity pointer-events-none z-50 transform group-hover/tooltip:-translate-y-1">
+              {tooltip}
+              <div className="absolute top-full left-1/2 -translate-x-1/2 border-4 border-transparent border-t-neutral-800" />
+            </div>
+          </div>
+        )}
+      </div>
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+        className="relative"
+      >
+        <div className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-600 group-focus-within:text-amber-500 transition-colors duration-500 z-10">
+          {icon}
+        </div>
+        <select
+          value={value}
+          onChange={(e) => onChange(e.target.value)}
+          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-12 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/40 focus:ring-2 focus:ring-amber-500/40 outline-none transition-all appearance-none cursor-pointer relative z-0"
+        >
+          {options.map((opt: string) => (
+            <option key={opt} value={opt} className="bg-[#0F141A] text-white py-2">{opt}</option>
+          ))}
+        </select>
+        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-neutral-600 z-10">
+          <ChevronUp className="w-4 h-4 rotate-180" />
+        </div>
       </motion.div>
     </div>
   );
@@ -428,54 +503,64 @@ function InputField({ label, icon, value, onChange, type = "text" }: any) {
 
 function StatTile({ label, value, sub, icon, suffix = "" }: any) {
   return (
-    <div className="bg-[#0B0F14] border border-white/[0.06] rounded-[32px] p-8 space-y-4 relative overflow-hidden group shadow-xl">
-      <div className="flex justify-between items-center text-[9px] font-black text-neutral-600 uppercase tracking-widest">
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-6 space-y-4 relative overflow-hidden group shadow-xl"
+    >
+      <div className="flex justify-between items-center text-xs font-bold text-neutral-400 uppercase tracking-wide">
         {label}
-        {icon}
+        <motion.div
+          whileHover={{ rotate: 15, scale: 1.1 }}
+          className="bg-[#11161C] p-2 rounded-lg border border-white/[0.04] text-amber-500"
+        >
+          {icon}
+        </motion.div>
       </div>
-      <div className="space-y-3">
-        <div className="text-4xl lg:text-5xl font-bold text-white tracking-tight flex items-baseline">
+      <div className="space-y-1">
+        <div className="text-3xl lg:text-4xl font-bold text-white tracking-tight flex items-baseline">
           {value}
-          <span className="text-lg text-neutral-600 ml-2 font-medium">{suffix}</span>
+          <span className="text-sm text-neutral-500 ml-1 font-medium">{suffix}</span>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="w-0.5 h-3 bg-[#F5A623] rounded-full" />
-          <p className="text-[9px] text-neutral-600 font-bold uppercase tracking-widest">{sub}</p>
+        <div className="flex items-center gap-2 pt-1">
+          <p className="text-[10px] text-neutral-500 font-semibold tracking-wide uppercase">{sub}</p>
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 }
 
 function EcoCard({ icon, value, labelSecondary }: any) {
   return (
-    <div className="bg-[#0B0F14]/50 border border-white/[0.04] rounded-[32px] p-[28px] flex-1 min-w-0 flex items-center gap-[20px] group transition-all min-h-[140px]">
-      <div className="w-16 h-16 rounded-full bg-black/40 border border-white/5 flex items-center justify-center relative flex-shrink-0">
+    <motion.div
+      whileHover={{ scale: 1.05 }}
+      className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-6 flex-1 min-w-0 flex items-center gap-5 group transition-all shadow-xl"
+    >
+      <div className="w-14 h-14 rounded-full bg-black/40 border border-white/5 flex items-center justify-center relative flex-shrink-0">
         <svg className="absolute inset-0 w-full h-full -rotate-90">
           <motion.circle
-            cx="32" cy="32" r="30"
+            cx="28" cy="28" r="26"
             fill="none"
             stroke="#F5A623"
             strokeWidth="1.5"
-            strokeDasharray="188"
-            initial={{ strokeDashoffset: 188 }}
-            whileInView={{ strokeDashoffset: 120 }}
+            strokeDasharray="164"
+            initial={{ strokeDashoffset: 164 }}
+            whileInView={{ strokeDashoffset: 90 }}
             transition={{ duration: 1.5, ease: "easeOut" }}
-            className="opacity-20"
+            className="opacity-30"
           />
         </svg>
-        <div className="text-neutral-700 group-hover:text-[#F5A623] transition-colors duration-500">
+        <div className="text-neutral-500 group-hover:text-amber-500 transition-colors duration-500">
           {icon}
         </div>
       </div>
       <div>
-        <div className="text-[clamp(26px,2.5vw,36px)] font-bold text-white leading-[1.1] break-keep">
+        <div className="text-2xl font-bold text-white leading-tight break-keep">
           <Counter value={value} decimals={0} />
         </div>
-        <p className="text-[14px] font-bold text-white opacity-65 uppercase tracking-widest mt-1">
+        <p className="text-xs font-semibold text-neutral-500 uppercase tracking-wide mt-1">
           {labelSecondary}
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 }

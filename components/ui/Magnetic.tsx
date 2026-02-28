@@ -3,7 +3,9 @@
 import { motion, useMotionValue, useSpring } from "framer-motion";
 import { useRef } from "react";
 
-export default function Magnetic({ children, amount }: { children: React.ReactNode; amount?: number }) {
+import { cn } from "@/lib/utils";
+
+export default function Magnetic({ children, amount, className }: { children: React.ReactNode; amount?: number; className?: string }) {
     const ref = useRef<HTMLDivElement>(null);
 
     const x = useMotionValue(0);
@@ -34,7 +36,7 @@ export default function Magnetic({ children, amount }: { children: React.ReactNo
             style={{ x: springX, y: springY }}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className="inline-block"
+            className={cn("inline-block", className)}
         >
             {children}
         </motion.div>
