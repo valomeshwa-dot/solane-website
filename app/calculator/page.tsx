@@ -56,35 +56,74 @@ export default function SolarCalculator() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B0F14] text-[#FFFFFF] font-sans selection:bg-amber-500/30 overflow-x-hidden">
+    <motion.main
+      initial={{ opacity: 0, y: 40 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+      className="min-h-screen bg-[#0B0F14] text-[#FFFFFF] font-sans selection:bg-amber-500/30 overflow-x-hidden relative"
+    >
+      {/* Subtle Background Glow Animation */}
+      <motion.div
+        animate={{ opacity: [0.4, 0.6, 0.4] }}
+        transition={{ duration: 6, repeat: Infinity }}
+        className="absolute top-0 left-0 right-0 h-[800px] bg-gradient-to-r from-amber-500/5 via-transparent to-amber-500/5 blur-3xl pointer-events-none z-0"
+      />
 
       {/* 🏙️ Hero Content */}
       <Section className="pt-32 pb-20 lg:pt-48 lg:pb-24">
         <Container className="max-w-[1200px] mx-auto px-6 text-center lg:text-left">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="space-y-6"
+            initial="hidden"
+            animate="visible"
+            variants={{
+              hidden: {},
+              visible: {
+                transition: { staggerChildren: 0.15 }
+              }
+            }}
+            className="space-y-6 relative z-10"
           >
-            <div className="flex items-center gap-3 justify-center lg:justify-start">
+            <motion.div
+              variants={{
+                hidden: { opacity: 0, y: 20 },
+                visible: { opacity: 1, y: 0 }
+              }}
+              className="flex items-center gap-3 justify-center lg:justify-start"
+            >
               <div className="bg-amber-500/10 border border-amber-500/20 px-3 py-1 rounded-full">
                 <Zap className="w-3 h-3 text-[#F5A623] fill-[#F5A623]" />
               </div>
               <span className="text-[10px] font-black uppercase tracking-[0.3em] text-neutral-500">ROI Calculator</span>
-            </div>
+            </motion.div>
 
             <div className="max-w-3xl space-y-4">
-              <h1 className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05]">
+              <motion.h1
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="text-5xl lg:text-7xl font-bold tracking-tight leading-[1.05]"
+              >
                 Calculate Your Solar <br />
                 <span className="relative inline-block text-[#FFFFFF]">
                   ROI
-                  <div className="absolute -bottom-1 left-0 w-full h-[2px] bg-[#F5A623]" />
+                  <motion.div
+                    initial={{ width: 0 }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
+                    className="absolute -bottom-1 left-0 h-[2px] bg-[#F5A623]"
+                  />
                 </span> In Minutes
-              </h1>
-              <p className="text-[#FFFFFF]/70 text-base lg:text-lg leading-relaxed max-w-[500px] font-medium">
+              </motion.h1>
+              <motion.p
+                variants={{
+                  hidden: { opacity: 0, y: 20 },
+                  visible: { opacity: 1, y: 0 }
+                }}
+                className="text-[#FFFFFF]/70 text-base lg:text-lg leading-relaxed max-w-[500px] font-medium"
+              >
                 High-precision modeling for solar asset performance and multi-decade financial sovereignty.
-              </p>
+              </motion.p>
             </div>
           </motion.div>
         </Container>
@@ -97,9 +136,10 @@ export default function SolarCalculator() {
 
             {/* 🌑 LEFT SIDE — CONTROL PANEL (#0E1217) */}
             <motion.div
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.2, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              viewport={{ once: true }}
               className="bg-[#0E1217] border border-white/[0.06] rounded-[40px] p-8 lg:p-10 space-y-12 shadow-lg relative overflow-hidden"
             >
               {/* Type Toggle - Architectural Lock */}
@@ -113,7 +153,10 @@ export default function SolarCalculator() {
                   style={{ width: 'calc(50% - 4px)' }}
                   transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
                 />
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(false)}
                   className={cn(
                     "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
@@ -121,8 +164,11 @@ export default function SolarCalculator() {
                   )}
                 >
                   Residential
-                </button>
-                <button
+                </motion.button>
+                <motion.button
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(true)}
                   className={cn(
                     "flex-1 relative z-10 text-[11px] font-semibold uppercase tracking-widest transition-colors duration-300 text-center",
@@ -130,7 +176,7 @@ export default function SolarCalculator() {
                   )}
                 >
                   Commercial
-                </button>
+                </motion.button>
               </div>
 
               {/* Input Fields */}
@@ -162,13 +208,19 @@ export default function SolarCalculator() {
               {/* Action */}
               <div className="pt-4 space-y-6">
                 <Magnetic amount={0.03}>
-                  <Button
+                  <motion.button
+                    whileHover={{
+                      scale: 1.04,
+                      boxShadow: "0px 0px 30px rgba(245, 166, 35, 0.4)"
+                    }}
+                    whileTap={{ scale: 0.97 }}
+                    transition={{ duration: 0.25 }}
                     onClick={handleCalculate}
-                    className="w-full bg-[#F5A623] hover:bg-[#F5A623]/90 text-black font-black h-16 rounded-2xl border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-4 active:scale-95 group"
+                    className="w-full bg-[#F5A623] text-black font-black h-16 rounded-2xl border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-4 group"
                   >
                     <span className="relative z-10 uppercase tracking-[0.3em]">Calculate Savings</span>
                     <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                  </Button>
+                  </motion.button>
                 </Magnetic>
                 <div className="flex items-start gap-3 px-1 opacity-40">
                   <Info className="w-3.5 h-3.5 mt-0.5" />
@@ -181,9 +233,10 @@ export default function SolarCalculator() {
 
             {/* 🌑 RIGHT SIDE — ANALYSIS DASHBOARD (#11161C) */}
             <motion.div
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeInOut" }}
+              initial={{ opacity: 0, scale: 0.97 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.6, delay: 0.2, ease: "easeOut" }}
+              viewport={{ once: true }}
               className="bg-[#11161C] border border-white/[0.06] rounded-[48px] p-8 lg:p-12 space-y-12 overflow-hidden shadow-2xl relative flex flex-col justify-center"
             >
               {/* Internal Grid Alignment */}
@@ -232,7 +285,9 @@ export default function SolarCalculator() {
                             transition={{ type: "spring", stiffness: 400, damping: 35 }}
                           />
                           {[10, 25].map(y => (
-                            <button
+                            <motion.button
+                              whileHover={{ scale: 1.05 }}
+                              whileTap={{ scale: 0.95 }}
                               key={y}
                               onClick={() => setProjectionYear(y)}
                               className={cn(
@@ -243,7 +298,7 @@ export default function SolarCalculator() {
                               )}
                             >
                               {y}Y
-                            </button>
+                            </motion.button>
                           ))}
                         </div>
                       </div>
@@ -316,19 +371,35 @@ export default function SolarCalculator() {
 
             <div className="pt-4">
               <Magnetic amount={0.04}>
-                <Button
-                  className="bg-gradient-to-r from-[#F5A623] to-[#D97706] text-black font-black h-16 px-12 rounded-2xl border-none text-[12px] tracking-[0.2em] transition-all hover:scale-[1.02] active:scale-95 shadow-xl uppercase group"
+                <motion.button
+                  whileHover={{
+                    scale: 1.04,
+                    boxShadow: "0px 0px 30px rgba(245, 166, 35, 0.4)"
+                  }}
+                  whileTap={{ scale: 0.97 }}
+                  transition={{ duration: 0.25 }}
+                  className="bg-gradient-to-r from-[#F5A623] to-[#D97706] text-black font-black h-16 px-12 rounded-2xl border-none text-[12px] tracking-[0.2em] shadow-xl uppercase group flex items-center justify-center mx-auto"
                 >
-                  Get Your Free Solar Assessment
-                </Button>
+                  REQUEST MY FREE SOLAR ASSESSMENT →
+                </motion.button>
               </Magnetic>
+
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+                viewport={{ once: true }}
+                className="pt-8 text-[10px] font-bold tracking-[0.3em] text-white/40 uppercase"
+              >
+                500+ ENGINEERING ASSESSMENTS COMPLETED
+              </motion.div>
             </div>
           </div>
         </Container>
       </Section>
 
       <div className="h-32" />
-    </main>
+    </motion.main>
   );
 }
 
@@ -336,7 +407,11 @@ function InputField({ label, icon, value, onChange, type = "text" }: any) {
   return (
     <div className="space-y-4 group">
       <label className="text-[9px] font-black uppercase tracking-[0.3em] text-neutral-600 block pl-1">{label}</label>
-      <div className="relative">
+      <motion.div
+        whileHover={{ scale: 1.02 }}
+        transition={{ duration: 0.2 }}
+        className="relative"
+      >
         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-neutral-800 group-focus-within:text-[#F5A623] transition-colors duration-500">
           {icon}
         </div>
@@ -346,7 +421,7 @@ function InputField({ label, icon, value, onChange, type = "text" }: any) {
           onChange={(e) => onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
           className="w-full bg-black/40 border border-white/[0.08] rounded-2xl h-14 pl-14 pr-4 text-sm font-semibold text-white focus:border-[#F5A623]/40 outline-none transition-all"
         />
-      </div>
+      </motion.div>
     </div>
   );
 }
