@@ -208,7 +208,14 @@ export default function AssessmentPage() {
                                         }}
                                         whileTap={{ scale: 0.96 }}
                                         transition={{ duration: 0.25 }}
-                                        className="w-full bg-amber-500 hover:bg-amber-600 text-black font-bold py-5 rounded-xl border-none text-base transition-colors flex items-center justify-center gap-3"
+                                        className="
+                                            inline-flex items-center justify-center gap-2
+                                            px-7 py-3.5
+                                            text-sm font-semibold tracking-wide
+                                            rounded-lg
+                                            bg-gradient-to-r from-yellow-500 to-orange-500
+                                            text-black
+                                        "
                                     >
                                         REQUEST MY FREE SOLAR ASSESSMENT <ArrowRight className="w-5 h-5" />
                                     </motion.button>
