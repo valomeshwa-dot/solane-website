@@ -21,8 +21,8 @@ function Counter({ value, decimals = 0, prefix = "", suffix = "", isCurrency = f
 
   useEffect(() => {
     const controls = animate(displayValue, value, {
-      duration: 1.5,
-      ease: "easeOut",
+      duration: 2.5,
+      ease: [0.16, 1, 0.3, 1], // Very smooth spring-like bezier
       onUpdate: (latest) => setDisplayValue(latest)
     });
     return () => controls.stop();
@@ -189,7 +189,7 @@ export default function SolarCalculator() {
               className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-8 lg:p-10 shadow-[0_20px_80px_rgba(0,0,0,0.6)] relative overflow-hidden transition-all duration-500 ease-out"
             >
               {/* Type Toggle */}
-              <div className="bg-[#14191F] border border-white/[0.08] p-1.5 rounded-xl flex relative mb-8 w-full max-w-[340px] mx-auto lg:mx-0 shadow-inner">
+              <div className="bg-[#14191F] border border-white/[0.08] p-1.5 rounded-xl flex relative mb-10 w-full h-14 shadow-inner">
                 <motion.div
                   className="absolute inset-y-1.5 left-1.5 bg-amber-500 rounded-lg shadow-md z-0"
                   initial={false}
@@ -197,7 +197,7 @@ export default function SolarCalculator() {
                     x: isCommercial ? '100%' : '0%'
                   }}
                   style={{ width: 'calc(50% - 6px)' }}
-                  transition={{ duration: 0.3, ease: "easeOut" }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 />
                 <motion.button
                   whileHover={{ scale: 1.02 }}
@@ -205,7 +205,7 @@ export default function SolarCalculator() {
                   transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(false)}
                   className={cn(
-                    "flex-1 relative z-10 py-2.5 text-xs font-bold uppercase tracking-wide transition-colors duration-300 text-center rounded-lg",
+                    "flex-1 relative z-10 flex items-center justify-center text-xs font-bold uppercase tracking-wide transition-colors duration-300 rounded-lg",
                     !isCommercial ? "text-black" : "text-neutral-400 hover:text-white"
                   )}
                 >
@@ -217,7 +217,7 @@ export default function SolarCalculator() {
                   transition={{ duration: 0.2 }}
                   onClick={() => setIsCommercial(true)}
                   className={cn(
-                    "flex-1 relative z-10 py-2.5 text-xs font-bold uppercase tracking-wide transition-colors duration-300 text-center rounded-lg",
+                    "flex-1 relative z-10 flex items-center justify-center text-xs font-bold uppercase tracking-wide transition-colors duration-300 rounded-lg",
                     isCommercial ? "text-black" : "text-neutral-400 hover:text-white"
                   )}
                 >
@@ -226,13 +226,13 @@ export default function SolarCalculator() {
               </div>
 
               {/* Input Fields */}
-              <div className="space-y-8">
+              <div className="space-y-10">
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.1 }}
                   viewport={{ once: true }}
-                  className="grid grid-cols-2 gap-4"
+                  className="grid grid-cols-2 gap-6"
                 >
                   <InputField
                     label="Monthly Bill (₹)"
@@ -356,7 +356,7 @@ export default function SolarCalculator() {
                 <motion.div
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
-                  className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-8 space-y-8 relative overflow-hidden group shadow-xl"
+                  className="bg-[#151A22] border border-white/10 rounded-3xl p-10 space-y-8 relative overflow-hidden group shadow-xl"
                 >
                   <div className="flex flex-col lg:flex-row justify-between items-start gap-8 relative z-10">
                     <div className="space-y-8 flex-1">
@@ -408,7 +408,7 @@ export default function SolarCalculator() {
                             <motion.div
                               initial={{ height: 0 }}
                               animate={{ height: isCalculated ? `${h}%` : 0 }}
-                              transition={{ duration: 1.5, delay: i * 0.1, ease: "easeOut" }}
+                              transition={{ duration: 2, delay: i * 0.15, ease: [0.16, 1, 0.3, 1] }}
                               className={cn(
                                 "absolute bottom-0 left-0 w-full transition-all duration-700 rounded-t-sm",
                                 i === 5 ? "bg-amber-500" : "bg-neutral-700"
@@ -460,7 +460,7 @@ export default function SolarCalculator() {
 
           <div className="flex justify-center">
             <Magnetic amount={0.25}>
-              <button className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-8 py-4 rounded-xl transition-all duration-300 ease-out">
+              <button className="!w-fit !h-auto !bg-amber-500 hover:!bg-amber-600 !text-black font-extrabold !py-[16px] !px-[44px] !rounded-[9999px] border-none text-[11px] tracking-[0.4em] transition-all duration-300 ease-in-out hover:!-translate-y-[2px] hover:shadow-[0_12px_30px_rgba(255,170,0,0.25)] active:scale-95 hover:brightness-110 !inline-flex items-center justify-center">
                 REQUEST MY FREE SOLAR ASSESSMENT →
               </button>
             </Magnetic>
@@ -505,7 +505,7 @@ function InputField({ label, icon, value, onChange, type = "text", tooltip }: an
           type={type}
           value={value}
           onChange={(e) => onChange(type === 'number' ? Number(e.target.value) : e.target.value)}
-          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-12 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/40 focus:ring-2 focus:ring-amber-500/40 outline-none transition-all"
+          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-14 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/60 focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.3)] focus:bg-[#151A22] outline-none transition-all duration-300"
         />
       </motion.div>
     </div>
@@ -538,7 +538,7 @@ function SelectField({ label, icon, value, onChange, options, tooltip }: any) {
         <select
           value={value}
           onChange={(e) => onChange(e.target.value)}
-          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-12 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/40 focus:ring-2 focus:ring-amber-500/40 outline-none transition-all appearance-none cursor-pointer relative z-0"
+          className="w-full bg-[#0F141A] border border-neutral-800/60 rounded-xl h-14 pl-12 pr-4 text-sm font-semibold text-white hover:border-amber-500/50 focus:border-amber-500/60 focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.3)] focus:bg-[#151A22] outline-none transition-all duration-300 appearance-none cursor-pointer relative z-0"
         >
           {options.map((opt: string) => (
             <option key={opt} value={opt} className="bg-[#0F141A] text-white py-2">{opt}</option>
@@ -556,7 +556,7 @@ function StatTile({ label, value, sub, icon, suffix = "" }: any) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-6 space-y-4 relative overflow-hidden group shadow-xl"
+      className="bg-[#151A22] border border-white/10 rounded-3xl p-8 space-y-4 relative overflow-hidden group shadow-xl"
     >
       <div className="flex justify-between items-center text-xs font-bold text-neutral-400 uppercase tracking-wide">
         {label}
@@ -584,7 +584,7 @@ function EcoCard({ icon, value, labelSecondary }: any) {
   return (
     <motion.div
       whileHover={{ scale: 1.05 }}
-      className="bg-[#0F141A] border border-neutral-800/60 rounded-2xl p-6 flex-1 min-w-0 flex items-center gap-5 group transition-all shadow-xl"
+      className="bg-[#151A22] border border-white/10 rounded-3xl p-8 flex-1 min-w-0 flex items-center gap-5 group transition-all shadow-xl"
     >
       <div className="w-14 h-14 rounded-full bg-black/40 border border-white/5 flex items-center justify-center relative flex-shrink-0">
         <svg className="absolute inset-0 w-full h-full -rotate-90">

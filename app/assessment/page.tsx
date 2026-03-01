@@ -361,21 +361,23 @@ export default function AssessmentPage() {
                                             <Magnetic amount={0.04}>
                                                 <motion.button
                                                     disabled={loading}
-                                                    whileHover={{
-                                                        scale: 1.05,
-                                                        boxShadow: "0px 0px 40px rgba(255,170,0,0.4)"
-                                                    }}
                                                     whileTap={{ scale: 0.96 }}
-                                                    transition={{ duration: 0.25 }}
+                                                    transition={{ duration: 0.3, ease: "easeOut" }}
                                                     className="
-                                                        inline-flex items-center justify-center gap-2
-                                                        px-10 py-5
-                                                        text-sm font-bold tracking-[0.2em] uppercase
-                                                        rounded-lg
-                                                        bg-gradient-to-r from-yellow-500 to-orange-500
-                                                        text-black
-                                                        w-full md:w-auto
+                                                        !inline-flex items-center justify-center gap-2
+                                                        !px-12 !py-4
+                                                        text-[11px] font-extrabold tracking-[0.4em] uppercase
+                                                        !rounded-[9999px]
+                                                        !bg-amber-500 hover:!bg-amber-600
+                                                        !text-black
+                                                        !w-fit !h-auto
+                                                        mx-auto
+                                                        transition-all duration-300 ease-in-out
+                                                        hover:!-translate-y-[2px]
+                                                        hover:!shadow-[0_14px_32px_rgba(255,170,0,0.25)]
+                                                        hover:brightness-110
                                                         disabled:opacity-70 disabled:grayscale
+                                                        border-none
                                                     "
                                                 >
                                                     {loading ? (

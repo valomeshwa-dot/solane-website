@@ -132,7 +132,7 @@ export default function ContactPage() {
             </motion.h2>
           </div>
 
-          <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-16 lg:gap-20 items-start">
+          <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
             {/* LEFT SIDE — CONTACT FORM */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
@@ -170,8 +170,8 @@ export default function ContactPage() {
                         <p className="text-neutral-500 text-sm opacity-80">Submit your requirements and an engineering specialist will reach out within 24 hours.</p>
                       </div>
 
-                      <form onSubmit={handleSubmit} className="space-y-8">
-                        <div className="grid md:grid-cols-2 gap-8">
+                      <form onSubmit={handleSubmit} className="space-y-10">
+                        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
                           <div className="space-y-3">
                             <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Full Name</label>
                             <input
@@ -180,7 +180,7 @@ export default function ContactPage() {
                               value={formData.full_name}
                               onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
                               placeholder="John Doe"
-                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                              className="bg-black border border-white/[0.06] rounded-xl px-5 py-4 text-white w-full hover:border-amber-500/50 focus:border-amber-500/60 focus:bg-[#0c0c0c] focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.2)] outline-none transition-all duration-300 text-sm"
                             />
                           </div>
                           <div className="space-y-3">
@@ -191,12 +191,12 @@ export default function ContactPage() {
                               value={formData.email}
                               onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                               placeholder="john@example.com"
-                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                              className="bg-black border border-white/[0.06] rounded-xl px-5 py-4 text-white w-full hover:border-amber-500/50 focus:border-amber-500/60 focus:bg-[#0c0c0c] focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.2)] outline-none transition-all duration-300 text-sm"
                             />
                           </div>
                         </div>
 
-                        <div className="grid md:grid-cols-2 gap-8">
+                        <div className="grid md:grid-cols-2 gap-8 lg:gap-10">
                           <div className="space-y-3">
                             <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Phone Number</label>
                             <input
@@ -205,7 +205,7 @@ export default function ContactPage() {
                               value={formData.phone}
                               onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
                               placeholder="+91 98765 43210"
-                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                              className="bg-black border border-white/[0.06] rounded-xl px-5 py-4 text-white w-full hover:border-amber-500/50 focus:border-amber-500/60 focus:bg-[#0c0c0c] focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.2)] outline-none transition-all duration-300 text-sm"
                             />
                           </div>
                           <div className="space-y-3">
@@ -214,7 +214,7 @@ export default function ContactPage() {
                               required
                               value={formData.property_type}
                               onChange={(e) => setFormData({ ...formData, property_type: e.target.value })}
-                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 appearance-none cursor-pointer text-sm"
+                              className="bg-black border border-white/[0.06] rounded-xl px-5 py-4 text-white w-full hover:border-amber-500/50 focus:border-amber-500/60 focus:bg-[#0c0c0c] focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.2)] outline-none transition-all duration-300 appearance-none cursor-pointer text-sm"
                             >
                               <option value="residential">Residential Estate</option>
                               <option value="commercial">Commercial Enterprise</option>
@@ -230,7 +230,7 @@ export default function ContactPage() {
                             value={formData.project_description}
                             onChange={(e) => setFormData({ ...formData, project_description: e.target.value })}
                             placeholder="Tell us about your structural or energy requirements..."
-                            className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 min-h-[140px] resize-none text-sm"
+                            className="bg-black border border-white/[0.06] rounded-xl px-5 py-4 text-white w-full hover:border-amber-500/50 focus:border-amber-500/60 focus:bg-[#0c0c0c] focus:ring-0 focus:shadow-[0_0_15px_rgba(245,158,11,0.2)] outline-none transition-all duration-300 min-h-[180px] resize-none text-sm"
                           ></textarea>
                         </div>
 
@@ -239,12 +239,12 @@ export default function ContactPage() {
                             <Button
                               disabled={loading}
                               type="submit"
-                              className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold py-5 px-10 rounded-[10px] border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-3 hover:-translate-y-1 shadow-none disabled:opacity-70"
+                              className="!w-fit !bg-amber-500 hover:!bg-amber-600 !text-black font-extrabold !py-[16px] !px-[40px] !rounded-[9999px] border-none text-[11px] tracking-[0.3em] transition-all duration-300 ease-in-out !inline-flex items-center justify-center gap-3 group hover:-translate-y-1.5 hover:brightness-110 hover:shadow-[0_20px_40px_rgba(245,158,11,0.3)] disabled:opacity-70 active:scale-95"
                             >
                               {loading ? (
-                                <>PROCESSING <Loader2 className="w-4 h-4 animate-spin" /></>
+                                <>PROCESSING <Loader2 className="w-4 h-4 animate-spin block mx-auto" /></>
                               ) : (
-                                <>SEND INQUIRY <ArrowRight className="w-4 h-4" /></>
+                                <>SEND INQUIRY <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" /></>
                               )}
                             </Button>
                           </Magnetic>
@@ -260,7 +260,7 @@ export default function ContactPage() {
             </motion.div>
 
             {/* RIGHT SIDE — INFO CARDS */}
-            <div className="space-y-10">
+            <div className="flex flex-col gap-10 h-full w-full">
               {[
                 {
                   title: 'Head Office',
@@ -287,9 +287,9 @@ export default function ContactPage() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.8, delay: i * 0.1 }}
-                  className="electric-border group cursor-pointer"
+                  className="electric-border group cursor-pointer w-full flex-1"
                 >
-                  <div className="p-8 lg:p-12 bg-[#0b0b0b] rounded-[24px] space-y-8 relative z-10 transition-transform duration-500 hover:-translate-y-1">
+                  <div className="p-8 lg:p-12 bg-[#0b0b0b] rounded-[24px] space-y-8 relative z-10 transition-transform duration-500 hover:-translate-y-1 h-full w-full">
                     <div className="flex items-center gap-6">
                       <div className="w-12 h-12 rounded-[12px] bg-black border border-white/[0.05] flex items-center justify-center transition-all duration-500 group-hover:border-amber-500/30">
                         {React.cloneElement(card.icon as React.ReactElement<{ className?: string }>, { className: 'w-5 h-5 text-amber-500' })}

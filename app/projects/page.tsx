@@ -312,7 +312,10 @@ export default function Projects() {
                 className="pt-8 relative z-20 flex justify-center"
               >
                 <Magnetic>
-                  <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-black font-extrabold px-12 py-5 rounded-[12px] border-none text-[11px] tracking-[0.4em] transition-all duration-300 hover:-translate-y-1 shadow-2xl shadow-amber-500/10 active:scale-95 hover:brightness-110">
+                  <Button
+                    size="lg"
+                    className="!w-fit !h-auto !bg-amber-500 hover:!bg-amber-600 !text-black font-extrabold !py-[16px] !px-[42px] !rounded-[9999px] border-none text-[11px] tracking-[0.4em] transition-all duration-300 ease-in-out hover:!-translate-y-[2px] hover:shadow-[0_10px_30px_rgba(255,170,0,0.25)] active:scale-95 hover:brightness-110 !inline-flex items-center justify-center"
+                  >
                     REQUEST A CONSULTATION
                   </Button>
                 </Magnetic>
