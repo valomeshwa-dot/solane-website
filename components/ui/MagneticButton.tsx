@@ -39,16 +39,17 @@ export const MagneticButton = ({ children, className = '', onClick }: MagneticBu
             ref={containerRef}
             onMouseMove={handleMouseMove}
             onMouseLeave={handleMouseLeave}
-            className={`inline-block transition-transform duration-200 ease-out ${className}`}
+            className={`inline-block ${className}`}
             style={{
                 transform: `translate(${transform.x}px, ${transform.y}px) scale(${transform.scale})`,
+                transition: 'transform 400ms cubic-bezier(0.16, 1, 0.3, 1)',
                 willChange: 'transform',
             }}
             onClick={onClick}
         >
             <div className="relative group">
-                {/* Subtle glow shadow on hover */}
-                <div className="absolute inset-0 bg-amber-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                {/* Enhanced premium glow expansion on hover */}
+                <div className="absolute inset-[-20px] bg-amber-500/15 rounded-full blur-[40px] opacity-0 group-hover:opacity-100 transition-all duration-500 ease-out scale-75 group-hover:scale-110 pointer-events-none" />
                 <div className="relative">
                     {children}
                 </div>

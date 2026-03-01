@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/Button';
 import { ArrowRight, CheckCircle2, ShieldCheck, Zap, Users, Leaf, Globe, Search, Heart, Award } from 'lucide-react';
 import { motion, AnimatePresence, animate } from 'framer-motion';
 import Magnetic from '@/components/ui/Magnetic';
+import Image from 'next/image';
 
 function Counter({ value, decimals = 0, prefix = "", suffix = "" }: { value: number; decimals?: number; prefix?: string; suffix?: string }) {
   const [displayValue, setDisplayValue] = React.useState(0);
@@ -91,8 +92,12 @@ export default function AboutPage() {
             transition={{ duration: 0.8, ease: "easeOut", delay: 0.6 }}
             className="w-full h-[300px] lg:h-[500px] bg-neutral-900 border border-white/[0.05] rounded-[16px] mt-40 relative overflow-hidden shadow-2xl"
           >
-            {/* Image Placeholder - Grayscale Architectural Shot */}
-            <div className="absolute inset-0 bg-[url('/api/placeholder/1200/600')] bg-cover bg-center grayscale opacity-40" />
+            <Image
+              src="/hero-about.jpeg"
+              alt="Engineering Energy Independence At Scale"
+              fill
+              className="object-cover"
+            />
             <div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/60" />
           </motion.div>
         </Container>
@@ -109,7 +114,12 @@ export default function AboutPage() {
               transition={{ duration: 0.8, ease: "easeOut" }}
               className="w-full h-[400px] lg:h-[680px] bg-neutral-900 rounded-[16px] shadow-xl relative overflow-hidden border border-white/[0.05]"
             >
-              <div className="absolute inset-0 bg-[url('/api/placeholder/600/800')] bg-cover bg-center grayscale opacity-30" />
+              <Image
+                src="/ourstory1.jpeg"
+                alt="Solane Our Story"
+                fill
+                className="object-cover"
+              />
             </motion.div>
 
             <motion.div
@@ -433,9 +443,9 @@ export default function AboutPage() {
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
-              { name: 'Arjun Mehta', role: 'Chief Engineering Officer' },
-              { name: 'Suhail Khan', role: 'Renewables Specialist' },
-              { name: 'Deepika Rao', role: 'Energy Consultant' }
+              { name: 'Arjun Mehta', role: 'Chief Engineering Officer', img: '/arjunmehta.jpeg' },
+              { name: 'Suhail Khan', role: 'Renewables Specialist', img: '/suhailkhan.jpeg' },
+              { name: 'Deepika Rao', role: 'Energy Consultant', img: '/deepikarao.jpeg' }
             ].map((member, i) => (
               <motion.div
                 key={i}
@@ -447,9 +457,13 @@ export default function AboutPage() {
               >
                 <div className="space-y-12 relative z-10">
                   <div className="w-full aspect-[4/5] bg-neutral-900 rounded-[12px] overflow-hidden relative border border-white/[0.02] shadow-2xl transition-all duration-700">
-                    {/* Grayscale Architectural Portraits */}
-                    <div className="absolute inset-0 bg-[url('/api/placeholder/400/500')] bg-cover bg-center grayscale transition-all duration-1000 opacity-40 group-hover:opacity-50 group-hover:scale-[1.02]" />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80" />
+                    <Image
+                      src={member.img}
+                      alt={member.name}
+                      fill
+                      className="object-cover grayscale transition-all duration-1000 opacity-80 group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.02]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-60" />
                   </div>
                   <div className="space-y-5 px-6">
                     <h4 className="text-2xl font-semibold text-white tracking-tight">{member.name}</h4>

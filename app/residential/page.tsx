@@ -2,7 +2,6 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
@@ -19,6 +18,7 @@ import {
 import { motion, AnimatePresence } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { MagneticButton } from '@/components/ui/MagneticButton';
+import Image from 'next/image';
 
 const luxuryEase = [0.22, 1, 0.36, 1] as const;
 
@@ -56,56 +56,45 @@ export default function ResidentialSolar() {
   const [openFaq, setOpenFaq] = useState<number | null>(null);
 
   return (
-    <main className="bg-[#0f0f10] text-neutral-100 selection:bg-amber-500/30">
+    <main className="bg-[#0a0a0a] text-neutral-100 relative bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.08),rgba(0,0,0,0))]">
+      {/* 3% Light Noise Texture Overlay */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       {/* 1️⃣ HERO SECTION */}
-      <Section className="relative pt-48 pb-56 overflow-hidden">
-        <Container className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="grid lg:grid-cols-2 gap-20 items-center">
+      <Section
+        className="relative min-h-screen flex items-center overflow-hidden pt-48 pb-32 lg:pt-56 lg:pb-32"
+        style={{
+          backgroundImage: "url('/residential-lifestyle.jpeg')",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
+        }}
+      >
+        {/* Improved Dark Luxury Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
+
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="relative z-10 max-w-3xl">
             <motion.div
               initial="initial"
               whileInView="whileInView"
               viewport={{ once: true }}
               variants={containerVariants}
-              className="space-y-10"
             >
-              <motion.span
+              <motion.p
                 variants={fadeUpVariant(20, 0.6)}
-                className="text-amber-500 font-bold tracking-[0.3em] text-[10px] uppercase block"
+                className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase mb-6 drop-shadow-sm"
               >
-                RESIDENTIAL SOLAR ENGINEERING
-              </motion.span>
+                LUXURY RESIDENTIAL SOLAR
+              </motion.p>
 
+              {/* Faint Radial Glow behind H1 */}
+              <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/10 blur-[100px] pointer-events-none rounded-full" />
               <motion.h1
-                className="text-5xl lg:text-7xl font-semibold tracking-tight leading-[1.05] text-white"
+                className="relative text-5xl md:text-[80px] font-bold leading-[1.1] tracking-tight max-w-4xl text-white drop-shadow-lg"
               >
-                <motion.span
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut", delay: 0 }}
-                  className="block"
-                >
-                  Solar Systems
-                </motion.span>
-                <motion.span
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.15 }}
-                  className="block"
-                >
-                  Designed for <span className="text-amber-500">Modern</span>
-                </motion.span>
-                <motion.span
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-                  className="block"
-                >
-                  Homes.
-                </motion.span>
+                Solar Systems Designed for <br />
+                <span className="text-amber-500">Modern Homes.</span>
               </motion.h1>
 
               <motion.p
@@ -113,9 +102,9 @@ export default function ResidentialSolar() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
-                className="text-neutral-400 text-lg lg:text-xl leading-relaxed max-w-[540px]"
+                className="mt-12 text-neutral-400 opacity-80 text-lg md:text-xl leading-relaxed max-w-xl font-medium"
               >
-                Rising electricity costs should not compromise your lifestyle. Solane designs architect-integrated rooftop solar systems that reduce up to 80% of grid dependency while enhancing your home&apos;s value.
+                Engineered rooftop solar solutions tailored for homeowners seeking long-term energy independence, architectural harmony, and financial clarity.
               </motion.p>
 
               <motion.div
@@ -123,75 +112,66 @@ export default function ResidentialSolar() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, ease: "easeOut", delay: 0.7 }}
-                className="flex flex-col sm:flex-row gap-8 pt-6"
+                className="mt-16 flex flex-col sm:flex-row gap-6"
               >
                 <MagneticButton>
-                  <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-12 py-7 rounded-full border-none text-base shadow-xl shadow-amber-500/10 transition-all hover:-translate-y-[4px]">
-                    Request Assessment
-                  </Button>
+                  <Link href="/assessment">
+                    <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-black font-semibold px-10 py-5 rounded-full border-none w-full shadow-lg shadow-amber-500/10 transition-all">
+                      REQUEST ASSESSMENT
+                    </Button>
+                  </Link>
                 </MagneticButton>
                 <MagneticButton>
-                  <Button variant="secondary" size="lg" className="border border-white/20 hover:border-white/40 text-white px-12 py-7 rounded-full text-base transition-all hover:bg-white/5">
-                    View Projects
-                  </Button>
+                  <Link href="/projects">
+                    <Button variant="secondary" size="lg" className="border border-white/20 hover:bg-white/5 text-white px-10 py-5 rounded-full w-full backdrop-blur-sm transition-all uppercase">
+                      VIEW PROJECTS
+                    </Button>
+                  </Link>
                 </MagneticButton>
               </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.98 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-              className="relative w-full max-h-[520px] aspect-[4/3] rounded-[16px] border border-white/5 bg-neutral-900 shadow-2xl overflow-hidden group"
-            >
-              <Image
-                src="https://picsum.photos/seed/reshero/1200/1500"
-                alt="Modern Residential Solar"
-                fill
-                className="object-cover opacity-90 transition-transform duration-[800ms] ease-out group-hover:scale-[1.02]"
-              />
-              <div className="absolute inset-0 bg-black/5 pointer-events-none" />
             </motion.div>
           </div>
         </Container>
       </Section>
 
+      <div className="border-t border-white/5 mx-auto max-w-7xl relative z-10" />
+
       {/* 2️⃣ WHY PROPERTY OWNERS ARE CHOOSING ENERGY INDEPENDENCE */}
-      <Section className="py-44 border-t border-white/5">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 relative z-10">
+        <Container className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-3xl mb-24"
+            className="mb-20 space-y-6 text-center max-w-4xl mx-auto"
           >
-            <h2 className="text-3xl lg:text-5xl font-semibold leading-tight text-white -tracking-tight">
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE ADVANTAGE</span>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1] text-white">
               Why Property Owners Are <br />
               Choosing <span className="text-amber-500">Energy Independence</span>
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 value: '80%',
                 label: 'Monthly Savings',
                 desc: 'Reduce electricity bills by up to 80% with precision design.',
-                icon: <Zap className="w-5 h-5 text-amber-500" />
+                icon: <Zap className="w-6 h-6 text-amber-500" />
               },
               {
                 value: '25+ Years',
                 label: 'Performance Asset',
-                desc: 'Predicatable power generation with Tier-1 components.',
-                icon: <ShieldCheck className="w-5 h-5 text-amber-500" />
+                desc: 'Predictable power generation with Tier-1 components.',
+                icon: <ShieldCheck className="w-6 h-6 text-amber-500" />
               },
               {
                 value: 'Subsidies',
                 label: 'Incentives Available',
                 desc: 'Recover investment in 3-5 years through government support.',
-                icon: <Clock className="w-5 h-5 text-amber-500" />
+                icon: <Clock className="w-6 h-6 text-amber-500" />
               },
             ].map((stat, i) => (
               <motion.div
@@ -200,16 +180,15 @@ export default function ResidentialSolar() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6, ease: "easeOut" }}
-                whileHover={{ y: -4 }}
-                className="electric-border p-12 group shadow-lg transition-shadow duration-300 hover:shadow-black/60"
+                className="relative rounded-2xl bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/5 p-10 flex flex-col h-full transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 group overflow-hidden hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
               >
-                <div className="mb-8 p-3 w-fit rounded-full bg-amber-500/5 group-hover:scale-[1.05] transition-transform duration-300">
+                <div className="mb-8 transform group-hover:scale-110 transition-transform duration-500 text-amber-500">
                   {stat.icon}
                 </div>
-                <div className="space-y-4">
-                  <h3 className="text-6xl font-semibold text-white tracking-tighter transition-colors group-hover:text-white/100">{stat.value}</h3>
-                  <p className="text-xs uppercase tracking-[0.25em] font-bold text-neutral-600 uppercase pt-2">{stat.label}</p>
-                  <p className="text-neutral-500 leading-relaxed text-sm pt-4 max-w-[240px]">
+                <div className="space-y-4 relative z-10 flex flex-col h-full">
+                  <h3 className="text-5xl font-bold text-white tracking-tight transition-colors group-hover:text-amber-400">{stat.value}</h3>
+                  <p className="text-[10px] tracking-[0.3em] font-bold text-neutral-500 uppercase pt-2">{stat.label}</p>
+                  <p className="text-neutral-400 opacity-80 leading-relaxed font-medium text-sm pt-4">
                     {stat.desc}
                   </p>
                 </div>
@@ -220,31 +199,28 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 3️⃣ PACING IMAGE BLOCK */}
-      <Section className="py-24 overflow-hidden">
-        <Container className="max-w-6xl mx-auto px-6 flex justify-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.7, ease: "easeOut" }}
-            className="relative w-[85%] max-h-[480px] aspect-[21/9] rounded-[16px] overflow-hidden border border-white/5 group shadow-2xl mx-auto"
-          >
+      <Section className="py-32 border-t border-white/5 relative z-10 bg-black/20">
+        <Container className="max-w-7xl mx-auto px-6 flex justify-center">
+          <div className="relative overflow-hidden rounded-2xl border border-white/10 w-full group">
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent transition-colors duration-700 z-10 pointer-events-none" />
             <Image
-              src="https://picsum.photos/seed/rescinematic/1920/1080"
+              src="/residential-lifestyle.jpeg"
               alt="Cinematic Residential View"
-              fill
-              className="object-cover transition-transform duration-[600ms] ease-out group-hover:scale-[1.02] opacity-80"
+              width={1200}
+              height={800}
+              className="w-full h-[400px] lg:h-[600px] object-cover transition-transform duration-700 ease-out group-hover:scale-105 opacity-80"
             />
-            <div className="absolute inset-0 bg-black/15 transition-opacity duration-300 group-hover:opacity-10 pointer-events-none" />
-          </motion.div>
+          </div>
         </Container>
       </Section>
 
       {/* 4️⃣ BUILT FOR ENERGY INDEPENDENCE SECTION */}
-      <Section className="py-44 border-b border-white/5 bg-white/[0.01]">
-        <Container className="max-w-6xl mx-auto px-6">
-          <motion.div className="max-w-3xl mb-24">
-            <h2 className="text-3xl lg:text-5xl font-semibold text-white -tracking-tight leading-tight">
+      <Section className="py-32 border-t border-white/5 bg-transparent relative">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-500/5 blur-[120px] pointer-events-none rounded-full" />
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
+          <motion.div className="max-w-4xl mb-20 space-y-6">
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE METHODOLOGY</span>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               {["Built for Energy Independence.", "Designed for Modern Living."].map((line, i) => (
                 <motion.span
                   key={i}
@@ -269,7 +245,7 @@ export default function ResidentialSolar() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12 relative z-10 w-full">
             {[
               {
                 title: 'Architectural Integration',
@@ -293,13 +269,25 @@ export default function ResidentialSolar() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
-                whileHover={{ y: -6 }}
-                className="electric-border p-12 flex flex-col items-start gap-10 group h-full shadow-lg transition-shadow duration-300 hover:shadow-black/60"
+                className="relative rounded-2xl bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/5 p-10 flex flex-col h-full transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 group overflow-hidden hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
               >
-                <div className="p-4 rounded-full bg-amber-500/5 group-hover:scale-[1.05] transition-transform duration-300">{card.icon}</div>
-                <div className="space-y-4">
-                  <h3 className="text-xl font-semibold text-white group-hover:text-amber-500 transition-colors uppercase tracking-tight">{card.title}</h3>
-                  <p className="text-neutral-500 leading-relaxed text-base">{card.description}</p>
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+                  <div className="absolute inset-0 border border-amber-500/20 rounded-2xl" />
+                  <div
+                    className="absolute inset-[-100%] animate-[spin_15s_linear_infinite]"
+                    style={{
+                      background: 'conic-gradient(from 0deg, transparent, rgba(255, 180, 0, 0.08) 10%, transparent 20%, transparent 50%, rgba(255, 180, 0, 0.08) 60%, transparent 70%)'
+                    }}
+                  />
+                </div>
+                <div className="mb-8 transform group-hover:scale-110 transition-transform duration-500 text-amber-500 relative z-10">
+                  {card.icon}
+                </div>
+                <div className="space-y-4 relative z-10 flex flex-col h-full">
+                  <h3 className="text-xl font-bold text-white tracking-tight transition-colors group-hover:text-amber-400">{card.title}</h3>
+                  <p className="text-neutral-400 opacity-80 leading-relaxed font-medium text-sm lg:text-base">
+                    {card.description}
+                  </p>
                 </div>
               </motion.div>
             ))}
@@ -308,8 +296,8 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 5️⃣ WHAT YOU GAIN SECTION */}
-      <Section className="py-32 border-t border-white/5">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 border-t border-white/5 bg-black/40">
+        <Container className="max-w-7xl mx-auto px-6">
           <div className="grid lg:grid-cols-[2fr,3fr] gap-20 items-start">
 
             {/* Left: Editorial Heading */}
@@ -359,9 +347,9 @@ export default function ResidentialSolar() {
                     className="group py-20 border-t border-white/[0.08] first:border-t-0 bg-transparent flex items-start gap-12"
                   >
                     <div className="pt-2 shrink-0">{benefit.icon}</div>
-                    <div className="space-y-5">
+                    <div className="space-y-4">
                       <h3 className="text-2xl font-bold text-white tracking-tight group-hover:text-amber-500 transition-colors uppercase">{benefit.title}</h3>
-                      <p className="text-neutral-500 text-lg leading-relaxed max-w-xl">
+                      <p className="text-neutral-400 opacity-80 font-medium text-lg leading-relaxed max-w-xl">
                         {benefit.description}
                       </p>
                     </div>
@@ -374,83 +362,79 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 6️⃣ RESIDENTIAL INTEGRATION PROCESS */}
-      <Section className="py-44 bg-white/[0.01]">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 relative bg-transparent border-t border-white/5">
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
-            className="max-w-3xl mb-32"
+            transition={{ duration: 0.8 }}
+            className="max-w-4xl mb-32 space-y-6 text-center mx-auto"
           >
-            <h2 className="text-3xl lg:text-5xl font-semibold text-white -tracking-tight">Residential <span className="text-amber-500">Integration</span> Process</h2>
-            <div className="w-20 h-px bg-amber-500/50 mt-10" />
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE PROCESS</span>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+              Residential <span className="text-amber-500">Integration</span> Process
+            </h2>
           </motion.div>
 
-          <div className="space-y-64">
+          <div className="space-y-32 lg:space-y-48 relative z-10">
             {[
               {
                 step: '01',
                 title: 'Site Assessment',
-                text: 'We evaluate rooftop structure, energy load, and shading conditions using advanced site assessment tools and precision modelling.'
+                text: 'On-site structural review, shading analysis, and energy profiling to determine optimal system placement.',
+                img: '/residential-assessment.jpeg'
               },
               {
                 step: '02',
-                title: 'System Design',
-                text: 'Custom engineering based on your property and savings goals. We provide detailed layouts integrated with home architecture.'
+                title: 'System Engineering',
+                text: 'Precision system layout, inverter configuration, and compliance planning tailored to your property.',
+                img: '/engineering.jpeg'
               },
               {
                 step: '03',
                 title: 'Installation',
-                text: 'Certified installation by specialists, complete net metering setup, and full system activation with performance support.'
+                text: 'Clean, efficient installation with minimal disruption and seamless architectural integration.',
+                img: '/residential-installation.jpeg'
               },
             ].map((item, i) => (
               <motion.div
                 key={i}
-                initial="initial"
-                whileInView="whileInView"
-                viewport={{ once: true }}
-                className="grid lg:grid-cols-2 gap-24 items-center relative group"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, ease: luxuryEase }}
+                className="grid lg:grid-cols-2 gap-16 lg:gap-32 items-center group relative"
               >
-                <motion.div
-                  initial={{ opacity: 0, x: i % 2 === 0 ? -20 : 20 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.7, ease: "easeOut" }}
-                  className={cn("space-y-10 relative z-10", i % 2 === 1 ? "lg:order-2" : "lg:order-1")}
-                >
+                <div className={cn("space-y-10 relative z-10", i % 2 === 1 ? "lg:order-2" : "lg:order-1")}>
                   <div className="relative">
-                    <motion.span
-                      initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 0.05 }}
-                      viewport={{ once: true }}
-                      transition={{ duration: 0.8, delay: 0.1 }}
-                      className="text-7xl lg:text-9xl font-bold text-white font-mono tracking-widest leading-none mb-8 block select-none"
-                    >
-                      {item.step}
-                    </motion.span>
-                    <h3 className="text-3xl lg:text-5xl font-semibold uppercase tracking-tight text-white mb-8 group-hover:translate-x-2 transition-transform duration-500">{item.title}</h3>
-                    <p className="text-neutral-500 text-lg lg:text-xl leading-1.6 max-w-xl">
-                      {item.text}
-                    </p>
+                    <div className="relative z-10 space-y-4">
+                      <span className="text-6xl lg:text-7xl font-bold text-white/[0.1] font-mono tracking-[0.2em] leading-none mb-6 block drop-shadow-sm">
+                        {item.step}
+                      </span>
+                      <h3 className="text-4xl lg:text-5xl font-bold uppercase tracking-tight mb-8">{item.title}</h3>
+                      <p className="text-neutral-400 opacity-80 text-lg lg:text-xl font-medium leading-relaxed max-w-lg">
+                        {item.text}
+                      </p>
+                    </div>
                   </div>
-                </motion.div>
-
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.98 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.8, ease: "easeOut" }}
-                  className={cn("relative aspect-[16/10] bg-neutral-900 rounded-[16px] overflow-hidden shadow-2xl border border-white/5", i % 2 === 1 ? "lg:order-1" : "lg:order-2")}
-                >
-                  <Image
-                    src={`https://picsum.photos/seed/process-${i}/1200/800`}
-                    alt={item.title}
-                    fill
-                    className="object-cover opacity-70 grayscale transition-all duration-[800ms] ease-out group-hover:opacity-100 group-hover:grayscale-0 group-hover:scale-[1.02]"
-                  />
-                  <div className="absolute inset-0 bg-black/8 pointer-events-none" />
-                </motion.div>
+                </div>
+                <div className={cn("relative", i % 2 === 1 ? "lg:order-1" : "lg:order-2")}>
+                  <div className="group relative h-[450px] lg:h-[600px] overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
+                    {/* Image */}
+                    <div className="absolute inset-0">
+                      <Image
+                        src={item.img}
+                        alt={item.title}
+                        width={800}
+                        height={600}
+                        className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-105 group-hover:scale-105"
+                      />
+                    </div>
+                    {/* Improved Dark Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.4)] to-transparent pointer-events-none" />
+                  </div>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -458,16 +442,17 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 7️⃣ TRUSTED BY ARCHITECTS & OWNERS */}
-      <Section className="py-56 border-t border-white/5">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 border-t border-white/5 bg-black/20">
+        <Container className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6 }}
-            className="text-center max-w-3xl mx-auto mb-36"
+            className="text-center max-w-3xl mx-auto mb-20 space-y-6"
           >
-            <h2 className="text-4xl lg:text-6xl font-semibold mb-8 text-white -tracking-tight">
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">TESTIMONIALS</span>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
               Trusted by <br />
               <motion.span
                 initial={{ opacity: 0 }}
@@ -476,10 +461,9 @@ export default function ResidentialSolar() {
                 className="text-amber-500"
               >Architects & Owners</motion.span>
             </h2>
-            <p className="text-neutral-500 text-lg lg:text-2xl leading-relaxed italic tracking-tight">Quiet excellence in energy independence.</p>
           </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-12">
+          <div className="grid md:grid-cols-3 gap-8 lg:gap-12">
             {[1, 2, 3].map((_, i) => (
               <motion.div
                 key={i}
@@ -487,19 +471,21 @@ export default function ResidentialSolar() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6, ease: "easeOut" }}
-                whileHover={{ y: -4 }}
-                className="bg-white/[0.02] rounded-[16px] p-14 space-y-12 flex flex-col transition-all duration-300 group shadow-lg hover:shadow-black/40"
+                className="relative rounded-2xl bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/5 p-10 flex flex-col h-full transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 group overflow-hidden hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
               >
-                <div className="flex gap-1.5">
+                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
+                  <div className="absolute inset-0 border border-amber-500/20 rounded-2xl" />
+                </div>
+                <div className="flex gap-1.5 relative z-10">
                   {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} className="w-2.5 h-2.5 text-amber-500/60 fill-amber-500/60" />
+                    <Star key={s} className="w-4 h-4 text-amber-500 fill-amber-500" />
                   ))}
                 </div>
-                <p className="text-neutral-400 text-lg leading-1.8 flex-1 italic">
+                <p className="text-neutral-400 opacity-80 font-medium text-lg leading-relaxed flex-1 italic mt-8 relative z-10">
                   &quot;Choosing Solane was the best decision for our new home. The integration is so seamless that people don&apos;t realize we have solar until we tell them.&quot;
                 </p>
-                <div className="pt-10 border-t border-white/5">
-                  <p className="text-white text-[11px] font-bold uppercase tracking-[0.4em] text-neutral-600">Resident — North Delhi</p>
+                <div className="pt-8 mt-8 border-t border-white/10 relative z-10">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.3em] text-neutral-500">Resident — North Delhi</p>
                 </div>
               </motion.div>
             ))}
@@ -508,17 +494,17 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 8️⃣ SUPPORT / FAQ */}
-      <Section className="py-44 bg-white/[0.01]">
-        <Container className="max-w-4xl mx-auto px-6">
+      <Section className="py-32 border-t border-white/5 bg-transparent">
+        <Container className="max-w-4xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="mb-24 text-left"
+            className="mb-20 text-left space-y-6"
           >
-            <h2 className="text-3xl lg:text-5xl font-semibold text-white -tracking-tight mb-8">Support</h2>
-            <div className="w-12 h-px bg-amber-500/40" />
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">FAQ</span>
+            <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">Support</h2>
           </motion.div>
 
           <div className="space-y-2">
@@ -573,31 +559,35 @@ export default function ResidentialSolar() {
       </Section>
 
       {/* 9️⃣ FINAL CTA SECTION */}
-      <Section className="py-56 relative overflow-hidden">
-        <Container className="max-w-6xl mx-auto px-6 relative z-10">
-          <div className="max-w-4xl mx-auto text-center space-y-16">
-            <motion.h2
-              initial={{ opacity: 0 }}
-              whileInView={{ opacity: 1 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="text-4xl lg:text-[5rem] font-semibold tracking-tight text-white leading-[1.05]"
-            >
-              Ready to Power Your Home with <br />
-              <motion.span
+      <Section className="py-32 relative overflow-hidden bg-black/40 border-t border-white/5">
+        <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/5 to-transparent shadow-2xl shadow-amber-500/20" />
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
+          <div className="max-w-5xl mx-auto text-center space-y-12">
+            <div className="space-y-6">
+              <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE NEXT STEP</span>
+              <motion.h2
                 initial={{ opacity: 0 }}
                 whileInView={{ opacity: 1 }}
-                transition={{ delay: 0.3 }}
-                className="text-amber-500"
-              >Confidence?</motion.span>
-            </motion.h2>
+                viewport={{ once: true }}
+                transition={{ duration: 0.8 }}
+                className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]"
+              >
+                Ready to Power Your Home with <br />
+                <motion.span
+                  initial={{ opacity: 0 }}
+                  whileInView={{ opacity: 1 }}
+                  transition={{ delay: 0.3 }}
+                  className="text-amber-500"
+                >Confidence?</motion.span>
+              </motion.h2>
+            </div>
 
             <motion.p
               initial={{ opacity: 0, y: 10 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="text-neutral-500 text-lg lg:text-xl max-w-xl mx-auto leading-relaxed"
+              className="text-neutral-400 opacity-80 text-lg lg:text-2xl max-w-2xl mx-auto font-medium leading-relaxed pt-6"
             >
               Book a personalized assessment and receive a structured savings projection for your property.
             </motion.p>
@@ -607,7 +597,7 @@ export default function ResidentialSolar() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.7, duration: 0.6 }}
-              className="flex justify-center pt-8"
+              className="flex justify-center pt-16 pb-8"
             >
               <MagneticButton>
                 <Button size="lg" className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-16 py-8 rounded-full border-none text-xl transition-all shadow-xl shadow-amber-500/20 hover:-translate-y-[4px] duration-300">

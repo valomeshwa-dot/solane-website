@@ -8,6 +8,7 @@ import { MapPin, Zap, Layout, Calendar, TrendingUp, Trees, Wind, ArrowRight, Sha
 import { motion, AnimatePresence, animate } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import Magnetic from '@/components/ui/Magnetic';
+import { supabase } from '@/lib/supabase';
 
 const formatCurrency = (val: number) => {
   if (val >= 10000000) return `₹${(val / 10000000).toFixed(2)} Cr`;
@@ -52,17 +53,67 @@ export default function SolarCalculator() {
   const [isCalculating, setIsCalculating] = useState(false);
   const [projectionYear, setProjectionYear] = useState(25);
 
-  const annualSavings = monthlyBill * 0.9 * 12;
+  const calculateSolar = () => {
+    const bill = Number(monthlyBill);
+    const annualSavings = bill * 0.9 * 12;
+    const payback = isCommercial ? 3.2 : 4.5;
+    const lifetimeSavings = annualSavings * projectionYear;
+    // Basic engineering estimates
+    const systemSize = Number((bill / 800).toFixed(1));
+    const cost = systemSize * 75000;
+
+    return {
+      annualSavings,
+      payback,
+      lifetimeSavings,
+      systemSize,
+      cost
+    };
+  };
+
+  const annualSavings = Number(monthlyBill) * 0.9 * 12;
   const lifetimeSavings = annualSavings * projectionYear;
   const paybackPeriod = isCommercial ? 3.2 : 4.5;
-  const co2Avoided = (monthlyBill / 10) * 0.8 * 12;
+  const co2Avoided = (Number(monthlyBill) / 10) * 0.8 * 12;
   const treesPlanted = Math.round(co2Avoided / 20);
 
-  const handleCalculate = () => {
+  const handleCalculate = async () => {
     setIsCalculating(true);
-    setTimeout(() => {
+
+    console.log("Submitting calculator data...");
+
+    const results = calculateSolar();
+    const propertyType = isCommercial ? 'Commercial' : 'Residential';
+
+    // Animation delay
+    setTimeout(async () => {
       setIsCalculating(false);
       setIsCalculated(true);
+
+      const { data, error } = await supabase
+        .from("leads")
+        .insert([
+          {
+            monthly_bill: Number(monthlyBill),
+            location: location || null,
+            city: location || null, // Shared field for the new CRM
+            roof_type: roofType || null,
+            property_type: propertyType || null,
+            estimated_system_size: results.systemSize,
+            estimated_cost: results.cost,
+            annual_savings: results.annualSavings,
+            payback_years: results.payback,
+            lifetime_savings: results.lifetimeSavings,
+            status: 'new',
+            lead_score: 0 // Will be auto-calculated by the Admin Panel on first fetch
+          }
+        ]);
+
+      if (error) {
+        console.error("Supabase Insert Error:", error);
+      } else {
+        console.log("Supabase Insert Success:", data);
+      }
     }, 1200);
   };
 

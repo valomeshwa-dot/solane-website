@@ -172,3 +172,11 @@
 .electric-border:hover::before {
   animation-duration: 5s;
 }
+@keyframes shine-sweep {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+
+.animate-shine-sweep {
+  animation: shine-sweep 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}

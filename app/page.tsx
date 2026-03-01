@@ -27,30 +27,34 @@ export default function Home() {
   }, []);
 
   return (
-    <main className="bg-[#0f0f10] text-neutral-100 relative">
+    <main className="bg-[#0a0a0a] text-neutral-100 relative bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(245,158,11,0.08),rgba(0,0,0,0))]">
+      {/* 3% Light Noise Texture Overlay */}
+      <div className="absolute inset-0 z-0 opacity-[0.03] pointer-events-none bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />
 
       {/* SECTION 1 — HERO */}
       <Section
-        className="relative min-h-screen flex items-center overflow-hidden pt-36 pb-28"
+        className="relative min-h-screen flex items-center overflow-hidden pt-48 pb-32 lg:pt-56 lg:pb-32"
         style={{ backgroundImage: "url('/hero.jpeg')", backgroundSize: 'cover', backgroundPosition: 'center', backgroundRepeat: 'no-repeat' }}
       >
 
-        {/* Dark Luxury Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/60 to-black/90" />
+        {/* Improved Dark Luxury Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/70 to-[#0a0a0a]" />
 
         {/* Hero Text Content */}
-        <Container className="max-w-6xl mx-auto px-6 relative z-10">
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div style={{ y }} className="max-w-3xl">
-            <p className="text-xs tracking-[0.35em] text-amber-400 font-medium uppercase">
+            <p className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase mb-6 drop-shadow-sm">
               ARCHITECTURAL SOLAR ENGINEERING
             </p>
+            {/* Faint Radial Glow behind H1 */}
+            <div className="absolute top-1/2 left-0 -translate-y-1/2 w-96 h-96 bg-amber-500/10 blur-[100px] pointer-events-none rounded-full" />
             <motion.h1
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, ease: luxuryEase }}
-              className="mt-6 text-5xl md:text-7xl font-semibold leading-[1.05] -tracking-tight max-w-4xl"
+              className="relative text-5xl md:text-[80px] font-bold leading-[1.1] tracking-tight max-w-4xl text-white drop-shadow-lg"
             >
-              Own Your <span className="text-amber-400">Energy.</span><br />
+              Own Your <span className="text-amber-500">Energy.</span><br />
               Eliminate Electricity Costs<br />
               With Precision Solar Design.
             </motion.h1>
@@ -58,7 +62,7 @@ export default function Home() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 1, ease: luxuryEase }}
-              className="mt-10 text-neutral-300 text-lg md:text-xl leading-relaxed max-w-lg"
+              className="mt-12 text-neutral-400 opacity-80 text-lg md:text-xl leading-relaxed max-w-xl font-medium"
             >
               Solane designs architect-integrated solar systems that reduce up to 80% of grid dependency. Engineered for structural harmony and long-term financial performance.
             </motion.p>
@@ -87,16 +91,16 @@ export default function Home() {
         </Container>
       </Section>
 
-      <div className="border-t border-white/5 mx-auto max-w-6xl" />
+      <div className="border-t border-white/5 mx-auto max-w-7xl relative z-10" />
 
       {/* SECTION 2 — TRUST STRIP */}
-      <div className="py-24">
-        <Container className="max-w-6xl mx-auto px-6">
+      <div className="py-32 relative z-10">
+        <Container className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
-            className="bg-white/[0.02] rounded-2xl px-10 py-12 border border-white/5"
+            className="bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] rounded-2xl px-10 py-12 border border-white/5 transform transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(245,158,11,0.08)] hover:border-amber-500/20"
           >
             <div className="flex flex-col md:flex-row justify-between items-center gap-12 text-center md:text-left">
               {[
@@ -107,8 +111,8 @@ export default function Home() {
               ].map((item, i) => (
                 <React.Fragment key={i}>
                   <div className="space-y-4 group">
-                    <p className="text-5xl font-semibold text-white -tracking-tight group-hover:text-amber-500 transition-colors duration-500">{item.label}</p>
-                    <p className="text-xs tracking-[0.25em] text-neutral-600 uppercase font-bold group-hover:text-neutral-400 transition-colors duration-500">{item.sublabel}</p>
+                    <p className="text-5xl font-bold text-white tracking-tight group-hover:text-amber-500 transition-colors duration-500">{item.label}</p>
+                    <p className="text-[10px] tracking-[0.3em] text-neutral-500 uppercase font-bold group-hover:text-neutral-400 transition-colors duration-500">{item.sublabel}</p>
                   </div>
                   {i < 3 && <div className="hidden md:block w-px h-12 bg-white/10" />}
                 </React.Fragment>
@@ -119,19 +123,22 @@ export default function Home() {
       </div>
 
       {/* SECTION 3 — WHY CHOOSE SOLANE */}
-      <Section className="py-40 overflow-hidden relative border-t border-white/5">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 overflow-hidden relative border-t border-white/10 bg-black/20">
+        <Container className="max-w-7xl mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: luxuryEase }}
-            className="text-center space-y-24"
+            className="text-center space-y-20 relative z-10"
           >
-            <h2 className="text-3xl md:text-5xl font-semibold text-white -tracking-tight leading-[1.1]">
-              Why Property Owners Choose<br />
-              <span className="text-amber-400">Solane</span>
-            </h2>
+            <div className="space-y-6">
+              <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE ADVANTAGE</span>
+              <h2 className="text-4xl lg:text-5xl font-bold text-white tracking-tight leading-[1.1]">
+                Why Property Owners Choose<br />
+                <span className="text-amber-500">Solane</span>
+              </h2>
+            </div>
             <div className="flex flex-col md:flex-row justify-center items-start gap-16 md:gap-32">
               {[
                 {
@@ -151,7 +158,7 @@ export default function Home() {
                   <div className="p-6 rounded-full border border-amber-500/20 group-hover:border-amber-500/40 group-hover:scale-105 transition-all duration-500 text-amber-400">
                     {item.icon}
                   </div>
-                  <span className="text-lg text-neutral-500 leading-1.6 group-hover:text-neutral-200 transition-colors duration-300">
+                  <span className="text-lg text-neutral-400 opacity-80 font-medium leading-relaxed group-hover:text-neutral-200 transition-colors duration-300">
                     {item.text}
                   </span>
                 </div>
@@ -162,25 +169,27 @@ export default function Home() {
       </Section>
 
       {/* SECTION 4 — ENGINEERED FOR PERFORMANCE */}
-      <Section className="py-32 bg-black/20">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 relative border-t border-white/5">
+        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-amber-500/5 blur-[120px] pointer-events-none rounded-full" />
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mb-24"
+            className="max-w-4xl mb-20 space-y-6"
           >
-            <h2 className="text-3xl md:text-[3.8rem] font-semibold leading-[1.1] -tracking-tighter mb-14 text-white">
-              Engineered for <span className="text-amber-400">Performance.</span><br />
-              Designed for <span className="text-amber-400">Permanence.</span>
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE METHODOLOGY</span>
+            <h2 className="text-4xl lg:text-5xl font-bold leading-[1.1] tracking-tight text-white mt-6">
+              Engineered for <span className="text-amber-500">Performance.</span><br />
+              Designed for <span className="text-amber-500">Permanence.</span>
             </h2>
-            <p className="text-neutral-500 text-lg md:text-xl leading-1.6 max-w-2xl font-medium">
-              Every Solae system is precision-engineered for your property’s structure, energy load, and long-term financial return.
+            <p className="text-neutral-400 opacity-80 text-lg md:text-xl leading-relaxed max-w-2xl font-medium mt-10">
+              Every Solane system is precision-engineered for your property’s structure, energy load, and long-term financial return.
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {[
               {
                 title: 'Architectural Integration',
@@ -200,21 +209,21 @@ export default function Home() {
             ].map((card, i) => (
               <div
                 key={i}
-                className="relative rounded-2xl bg-white/[0.025] backdrop-blur-md border border-white/5 p-10 transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/20 group overflow-hidden hover:shadow-2xl hover:shadow-amber-500/5"
+                className="relative rounded-2xl bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] border border-white/5 p-10 transition-all duration-500 hover:-translate-y-2 hover:border-amber-500/50 group overflow-hidden hover:shadow-[0_0_30px_rgba(245,158,11,0.15)]"
               >
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none">
-                  <div className="absolute inset-0 border border-amber-500/10 rounded-2xl" />
+                  <div className="absolute inset-0 border border-amber-500/20 rounded-2xl" />
                   <div
                     className="absolute inset-[-100%] animate-[spin_15s_linear_infinite]"
                     style={{
-                      background: 'conic-gradient(from 0deg, transparent, rgba(255, 180, 0, 0.05) 10%, transparent 20%, transparent 50%, rgba(255, 180, 0, 0.05) 60%, transparent 70%)'
+                      background: 'conic-gradient(from 0deg, transparent, rgba(255, 180, 0, 0.08) 10%, transparent 20%, transparent 50%, rgba(255, 180, 0, 0.08) 60%, transparent 70%)'
                     }}
                   />
                 </div>
-                <div className="relative z-10">
+                <div className="relative z-10 flex flex-col h-full">
                   <div className="mb-8 transform group-hover:scale-110 transition-transform duration-500">{card.icon}</div>
-                  <h3 className="text-xl font-semibold mb-4 group-hover:text-amber-400 transition-colors duration-300 tracking-tight">{card.title}</h3>
-                  <p className="text-neutral-600 leading-1.6 text-sm lg:text-base group-hover:text-neutral-400 transition-colors duration-300">{card.description}</p>
+                  <h3 className="text-xl font-bold mb-4 text-white group-hover:text-amber-400 transition-colors duration-300 tracking-tight">{card.title}</h3>
+                  <p className="text-neutral-400 opacity-80 leading-relaxed font-medium text-sm lg:text-base transition-colors duration-300">{card.description}</p>
                 </div>
               </div>
             ))}
@@ -240,32 +249,33 @@ export default function Home() {
       </Section>
 
       {/* SECTION 5 — RESIDENTIAL & COMMERCIAL */}
-      <Section className="border-t border-white/5 py-32">
-        <Container className="max-w-6xl mx-auto px-6">
-          <div className="grid lg:grid-cols-2 gap-10">
+      <Section className="border-t border-white/10 py-32 bg-black/40">
+        <Container className="max-w-7xl mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-14">
 
             {/* Residential */}
             <Link href="/residential" className="block group">
-              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md">
+              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] transform transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(245,158,11,0.2)] hover:border-amber-500/50">
                 {/* Image */}
                 <div className="absolute inset-0">
                   <img
                     src="/residential.jpeg"
                     alt="Residential Solar"
-                    className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 opacity-80 group-hover:opacity-100"
                   />
                 </div>
-                {/* Strong Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+                {/* Improved Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.4)] to-transparent pointer-events-none" />
                 {/* Content */}
-                <div className="relative z-10 p-8 flex flex-col justify-between h-full">
+                <div className="relative z-10 p-10 flex flex-col justify-between h-full">
                   <div />
                   <div>
-                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors duration-300">Residential</h3>
-                    <p className="text-white/80 text-lg max-w-md mb-6">
+                    <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase mb-4 block drop-shadow-md">PORTFOLIO</span>
+                    <h3 className="text-4xl font-bold mb-3 text-white tracking-tight drop-shadow-lg group-hover:text-amber-400 transition-colors duration-300">Residential</h3>
+                    <p className="text-neutral-300 text-lg max-w-md mb-8 font-medium drop-shadow-md">
                       Premium rooftop systems tailored for luxury homes seeking long-term energy independence.
                     </p>
-                    <button className="px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
+                    <button className="px-8 py-3.5 rounded-full border border-white/20 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
                       Explore <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -275,26 +285,27 @@ export default function Home() {
 
             {/* Commercial */}
             <Link href="/commercial" className="block group">
-              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-black/40 backdrop-blur-md">
+              <div className="group relative h-[500px] w-full cursor-pointer overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)] transform transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_0_40px_rgba(245,158,11,0.2)] hover:border-amber-500/50">
                 {/* Image */}
                 <div className="absolute inset-0">
                   <img
                     src="/commercial.jpeg"
                     alt="Commercial Solar"
-                    className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                    className="w-full h-full object-cover transition-all duration-700 ease-out group-hover:scale-105 opacity-80 group-hover:opacity-100"
                   />
                 </div>
-                {/* Strong Dark Overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+                {/* Improved Dark Overlay */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.4)] to-transparent pointer-events-none" />
                 {/* Content */}
-                <div className="relative z-10 p-8 flex flex-col justify-between h-full">
+                <div className="relative z-10 p-10 flex flex-col justify-between h-full">
                   <div />
                   <div>
-                    <h3 className="text-3xl font-semibold mb-3 text-white uppercase -tracking-tight group-hover:text-amber-500 transition-colors duration-300">Commercial</h3>
-                    <p className="text-white/80 text-lg max-w-md mb-6">
+                    <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase mb-4 block drop-shadow-md">PORTFOLIO</span>
+                    <h3 className="text-4xl font-bold mb-3 text-white tracking-tight drop-shadow-lg group-hover:text-amber-400 transition-colors duration-300">Commercial</h3>
+                    <p className="text-neutral-300 text-lg max-w-md mb-8 font-medium drop-shadow-md">
                       Scalable solar infrastructure that protects business margins and reduces operational costs.
                     </p>
-                    <button className="px-6 py-3 rounded-full border border-white/20 text-white hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
+                    <button className="px-8 py-3.5 rounded-full border border-white/20 text-white font-bold text-xs uppercase tracking-widest hover:bg-white/10 transition flex items-center gap-2 group-hover:border-amber-500 group-hover:text-amber-500 duration-300">
                       Explore <ArrowRight className="w-4 h-4" />
                     </button>
                   </div>
@@ -307,20 +318,20 @@ export default function Home() {
       </Section>
 
       {/* SECTION 6 — THE PATH TO ENERGY INDEPENDENCE */}
-      <Section className="py-40 bg-black/30">
-        <Container className="max-w-6xl mx-auto px-6">
+      <Section className="py-32 relative bg-transparent border-t border-white/5">
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.8 }}
-            className="max-w-4xl mb-48"
+            className="max-w-4xl mb-32 space-y-6"
           >
-            <h2 className="text-3xl lg:text-[4.5rem] font-semibold mb-10 text-white -tracking-tight leading-[1.1]">
-              The Path to <br /><span className="text-amber-400">Energy Independence</span>
+            <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE PROCESS</span>
+            <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-white tracking-tight leading-[1.1]">
+              The Path to <br /><span className="text-amber-500">Energy Independence</span>
             </h2>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-amber-400 to-transparent mb-12" />
-            <p className="text-neutral-500 text-xl md:text-2xl leading-1.6">
+            <p className="text-neutral-400 opacity-80 text-xl md:text-2xl font-medium leading-relaxed max-w-2xl mt-10">
               A structured three-stage process built around precision, performance, and long-term reliability.
             </p>
           </motion.div>
@@ -360,25 +371,25 @@ export default function Home() {
                       <span className="text-6xl lg:text-7xl font-bold text-white/[0.1] font-mono tracking-[0.2em] leading-none mb-6 block">
                         {item.step}
                       </span>
-                      <h3 className="text-4xl lg:text-5xl font-semibold uppercase -tracking-tight mb-8">{item.title}</h3>
-                      <p className="text-neutral-500 text-lg lg:text-xl leading-1.6 max-w-lg">
+                      <h3 className="text-4xl lg:text-5xl font-bold uppercase tracking-tight mb-8">{item.title}</h3>
+                      <p className="text-neutral-400 opacity-80 text-lg lg:text-xl font-medium leading-relaxed max-w-lg">
                         {item.text}
                       </p>
                     </div>
                   </div>
                 </div>
                 <div className={cn("relative", i % 2 === 1 ? "lg:order-1" : "lg:order-2")}>
-                  <div className="group relative h-[550px] lg:h-[850px] overflow-hidden rounded-2xl border border-white/10 bg-black/40 shadow-[0_50px_100px_-20px_rgba(0,0,0,1)]">
+                  <div className="group relative h-[550px] lg:h-[850px] overflow-hidden rounded-2xl border border-white/10 bg-[#111111] shadow-[0_8px_30px_rgb(0,0,0,0.12)]">
                     {/* Image */}
                     <div className="absolute inset-0">
                       <img
                         src={item.img}
                         alt={item.title}
-                        className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-[2] group-hover:scale-105"
+                        className="w-full h-full object-cover grayscale brightness-75 transition-all duration-700 ease-out group-hover:grayscale-0 group-hover:brightness-105 group-hover:scale-105"
                       />
                     </div>
-                    {/* Strong Dark Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-black/80 to-black/40" />
+                    {/* Improved Dark Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[rgba(0,0,0,0.9)] via-[rgba(0,0,0,0.4)] to-transparent pointer-events-none" />
                   </div>
                 </div>
               </motion.div>
@@ -388,51 +399,43 @@ export default function Home() {
       </Section>
 
       {/* SECTION 7 — FINAL CTA */}
-      <Section className="py-40 relative overflow-hidden bg-black/40">
+      <Section className="py-32 relative overflow-hidden bg-black/40 border-t border-white/5">
         <div className="absolute bottom-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-amber-500/5 to-transparent shadow-2xl shadow-amber-500/20" />
-        <Container className="max-w-6xl mx-auto px-6">
+        <Container className="max-w-7xl mx-auto px-6 relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="max-w-5xl mx-auto text-center space-y-16"
+            className="max-w-5xl mx-auto text-center space-y-12"
           >
-            <h2 className="text-3xl lg:text-[4.8rem] font-semibold -tracking-tight text-white leading-[1.05]">
-              Ready to Take Control of Your <br />
-              <span className="text-amber-400">Energy</span> Costs?
-            </h2>
-            <div className="w-24 h-[1px] bg-gradient-to-r from-amber-400 to-transparent mx-auto mt-6" />
-            <p className="text-neutral-500 text-lg lg:text-2xl max-w-2xl mx-auto leading-1.6 pt-10">
-              Join property owners who have transitioned to predictable, self-generated power with Solae.
+            <div className="space-y-6">
+              <span className="text-[10px] tracking-[0.4em] text-amber-500 font-bold uppercase block">THE NEXT STEP</span>
+              <h2 className="text-4xl lg:text-5xl font-bold tracking-tight text-white leading-[1.1]">
+                Ready to Take Control of Your <br />
+                <span className="text-amber-500">Energy</span> Costs?
+              </h2>
+            </div>
+            <p className="text-neutral-400 opacity-80 text-lg lg:text-2xl max-w-2xl mx-auto font-medium leading-relaxed pt-6">
+              Join property owners who have transitioned to predictable, self-generated power with Solane.
             </p>
 
-            <form className="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6 pt-16">
-              <input
-                type="text"
-                placeholder="Name"
-                className="bg-neutral-900 border border-white/5 rounded-xl px-7 py-5 focus:border-amber-500/50 outline-none text-neutral-200 transition-all hover:bg-neutral-800/50"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email"
-                className="bg-neutral-900 border border-white/5 rounded-xl px-7 py-5 focus:border-amber-500/50 outline-none text-neutral-200 transition-all hover:bg-neutral-800/50"
-                required
-              />
-              <input
-                type="text"
-                placeholder="Location"
-                className="bg-neutral-900 border border-white/5 rounded-xl px-7 py-5 focus:border-amber-500/50 outline-none text-neutral-200 transition-all hover:bg-neutral-800/50"
-                required
-              />
-              <div className="md:col-span-3 pt-10">
-                <MagneticButton className="w-full">
-                  <Button size="lg" className="w-full bg-amber-500 hover:bg-amber-600 hover:-translate-y-1 text-black font-bold py-8 rounded-xl border-none text-xl transition-all shadow-xl shadow-amber-500/20">
-                    Request Your Free Assessment
+            <div className="flex flex-col items-center justify-center pt-24 pb-20">
+              <MagneticButton>
+                <Link href="/assessment">
+                  <Button
+                    size="lg"
+                    className="group relative h-[64px] px-14 lg:px-20 bg-amber-500 hover:bg-amber-600 text-black font-bold uppercase tracking-[0.1em] rounded-full border-none text-lg lg:text-xl transition-all duration-300 shadow-[0_0_30px_rgba(234,179,8,0.25)] hover:shadow-[0_0_60px_rgba(234,179,8,0.45)] overflow-hidden"
+                  >
+                    <span className="relative z-10 transition-transform duration-300 group-hover:scale-[1.02] inline-block">Request Your Free Assessment</span>
+
+                    {/* Subtle Shine Sweep Effect */}
+                    <div className="absolute inset-0 z-0 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <div className="absolute top-0 -left-[100%] w-[40%] h-full bg-gradient-to-r from-transparent via-white/30 to-transparent skew-x-[-30deg] group-hover:animate-shine-sweep" />
+                    </div>
                   </Button>
-                </MagneticButton>
-              </div>
-            </form>
+                </Link>
+              </MagneticButton>
+            </div>
             <p className="text-neutral-600 text-xs tracking-[0.3em] uppercase font-bold text-center">25-Year Performance Warranty Included</p>
           </motion.div>
         </Container>

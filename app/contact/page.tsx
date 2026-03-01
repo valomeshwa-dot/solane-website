@@ -1,14 +1,62 @@
 'use client';
 
-import React from 'react';
+import React, { useState } from 'react';
 import { Container } from '@/components/ui/Container';
 import { Section } from '@/components/ui/Section';
 import { Button } from '@/components/ui/Button';
-import { MapPin, Phone, Mail, Clock, ShieldCheck, ArrowRight } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { MapPin, Phone, Mail, Clock, ShieldCheck, ArrowRight, Loader2, CheckCircle2 } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import Magnetic from '@/components/ui/Magnetic';
+import { supabase } from '@/lib/supabase';
 
 export default function ContactPage() {
+  const [loading, setLoading] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const [formData, setFormData] = useState({
+    full_name: '',
+    email: '',
+    phone: '',
+    property_type: 'residential',
+    project_description: ''
+  });
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+
+    try {
+      const { error } = await supabase
+        .from('leads')
+        .insert([{
+          full_name: formData.full_name,
+          email: formData.email,
+          phone: formData.phone,
+          property_type: formData.property_type,
+          project_description: formData.project_description,
+          source: 'contact_consultation'
+        }]);
+
+      if (error) throw error;
+
+      console.log('Contact submission successful');
+      setSubmitted(true);
+      setFormData({
+        full_name: '',
+        email: '',
+        phone: '',
+        property_type: 'residential',
+        project_description: ''
+      });
+    } catch (err: any) {
+      console.error("Supabase insert error:", err.message);
+      console.error("Full error object:", err);
+      alert(`Error: ${err.message || 'Unknown error'}`);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className="bg-[#0f0f10] text-neutral-100 min-h-screen relative overflow-hidden">
       {/* Background Depth - Texture Noise */}
@@ -94,69 +142,120 @@ export default function ContactPage() {
               className="electric-border"
             >
               <div className="bg-[#0b0b0b] rounded-[24px] p-8 lg:p-14 space-y-10 relative z-10">
-                <div className="space-y-4">
-                  <h3 className="text-2xl font-semibold text-white tracking-tight">Request a Technical Consultation</h3>
-                  <p className="text-neutral-500 text-sm opacity-80">Submit your requirements and an engineering specialist will reach out within 24 hours.</p>
-                </div>
-
-                <form className="space-y-8">
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Full Name</label>
-                      <input
-                        type="text"
-                        placeholder="John Doe"
-                        className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Email Address</label>
-                      <input
-                        type="email"
-                        placeholder="john@example.com"
-                        className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
-                      />
-                    </div>
-                  </div>
-
-                  <div className="grid md:grid-cols-2 gap-8">
-                    <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Phone Number</label>
-                      <input
-                        type="tel"
-                        placeholder="+91 98765 43210"
-                        className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
-                      />
-                    </div>
-                    <div className="space-y-3">
-                      <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Property Type</label>
-                      <select className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 appearance-none cursor-pointer text-sm">
-                        <option value="residential">Residential Estate</option>
-                        <option value="commercial">Commercial Enterprise</option>
-                        <option value="industrial">Industrial Facility</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="space-y-3">
-                    <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Brief Project Overview</label>
-                    <textarea
-                      placeholder="Tell us about your structural or energy requirements..."
-                      className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 min-h-[140px] resize-none text-sm"
-                    ></textarea>
-                  </div>
-
-                  <div className="pt-2 flex flex-col items-center gap-6">
-                    <Magnetic amount={0.1}>
-                      <Button className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold py-4 px-10 rounded-[10px] border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-3 hover:-translate-y-1 shadow-none">
-                        SEND INQUIRY <ArrowRight className="w-4 h-4" />
+                <AnimatePresence mode="wait">
+                  {submitted ? (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      className="py-12 text-center space-y-6"
+                    >
+                      <div className="w-20 h-20 bg-amber-500/10 rounded-full flex items-center justify-center mx-auto border border-amber-500/20">
+                        <CheckCircle2 className="w-10 h-10 text-amber-500" />
+                      </div>
+                      <h3 className="text-2xl font-semibold text-white">Inquiry Sent Successfully</h3>
+                      <p className="text-neutral-500 text-sm max-w-xs mx-auto">
+                        Thank you for reaching out. An engineering specialist will review your requirements and contact you within 24 hours.
+                      </p>
+                      <Button
+                        onClick={() => setSubmitted(false)}
+                        className="bg-amber-500 hover:bg-amber-600 text-black font-bold px-8 mt-4"
+                      >
+                        Send Another Message
                       </Button>
-                    </Magnetic>
-                    <p className="text-[10px] text-neutral-600 font-bold tracking-[0.2em] uppercase opacity-70">
-                      Engineering Response Time: &lt; 24 Hours
-                    </p>
-                  </div>
-                </form>
+                    </motion.div>
+                  ) : (
+                    <>
+                      <div className="space-y-4">
+                        <h3 className="text-2xl font-semibold text-white tracking-tight">Request a Technical Consultation</h3>
+                        <p className="text-neutral-500 text-sm opacity-80">Submit your requirements and an engineering specialist will reach out within 24 hours.</p>
+                      </div>
+
+                      <form onSubmit={handleSubmit} className="space-y-8">
+                        <div className="grid md:grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Full Name</label>
+                            <input
+                              required
+                              type="text"
+                              value={formData.full_name}
+                              onChange={(e) => setFormData({ ...formData, full_name: e.target.value })}
+                              placeholder="John Doe"
+                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-3">
+                            <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Email Address</label>
+                            <input
+                              required
+                              type="email"
+                              value={formData.email}
+                              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                              placeholder="john@example.com"
+                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                            />
+                          </div>
+                        </div>
+
+                        <div className="grid md:grid-cols-2 gap-8">
+                          <div className="space-y-3">
+                            <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Phone Number</label>
+                            <input
+                              required
+                              type="tel"
+                              value={formData.phone}
+                              onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                              placeholder="+91 98765 43210"
+                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 text-sm"
+                            />
+                          </div>
+                          <div className="space-y-3">
+                            <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Property Type</label>
+                            <select
+                              required
+                              value={formData.property_type}
+                              onChange={(e) => setFormData({ ...formData, property_type: e.target.value })}
+                              className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 appearance-none cursor-pointer text-sm"
+                            >
+                              <option value="residential">Residential Estate</option>
+                              <option value="commercial">Commercial Enterprise</option>
+                              <option value="industrial">Industrial Facility</option>
+                            </select>
+                          </div>
+                        </div>
+
+                        <div className="space-y-3">
+                          <label className="text-[10px] uppercase tracking-[0.4em] text-neutral-500 font-bold opacity-70">Brief Project Overview</label>
+                          <textarea
+                            required
+                            value={formData.project_description}
+                            onChange={(e) => setFormData({ ...formData, project_description: e.target.value })}
+                            placeholder="Tell us about your structural or energy requirements..."
+                            className="bg-black border border-white/[0.06] rounded-[10px] px-5 py-3.5 text-white w-full focus:border-amber-500/50 focus:bg-[#0c0c0c] outline-none transition-all duration-300 min-h-[140px] resize-none text-sm"
+                          ></textarea>
+                        </div>
+
+                        <div className="pt-2 flex flex-col items-center gap-6">
+                          <Magnetic amount={0.1}>
+                            <Button
+                              disabled={loading}
+                              type="submit"
+                              className="w-full bg-amber-500 hover:bg-amber-600 text-black font-extrabold py-5 px-10 rounded-[10px] border-none text-[11px] tracking-[0.3em] transition-all flex items-center justify-center gap-3 hover:-translate-y-1 shadow-none disabled:opacity-70"
+                            >
+                              {loading ? (
+                                <>PROCESSING <Loader2 className="w-4 h-4 animate-spin" /></>
+                              ) : (
+                                <>SEND INQUIRY <ArrowRight className="w-4 h-4" /></>
+                              )}
+                            </Button>
+                          </Magnetic>
+                          <p className="text-[10px] text-neutral-600 font-bold tracking-[0.2em] uppercase opacity-70">
+                            Engineering Response Time: &lt; 24 Hours
+                          </p>
+                        </div>
+                      </form>
+                    </>
+                  )}
+                </AnimatePresence>
               </div>
             </motion.div>
 
